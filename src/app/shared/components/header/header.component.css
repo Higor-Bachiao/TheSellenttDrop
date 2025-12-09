@@ -1,0 +1,21 @@
+.navbar-brand {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.navbar-text {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.nav-link {
+  transition: color 0.2s;
+}
+
+.nav-link:hover {
+  color: #fff !important;
+}
+
+.nav-link.active {
+  font-weight: bold;
+  color: #ffc107 !important;
+}

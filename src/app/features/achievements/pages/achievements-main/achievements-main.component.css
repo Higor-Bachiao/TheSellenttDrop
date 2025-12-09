@@ -1,0 +1,77 @@
+.achievements-container {
+  padding: 20px 0;
+}
+
+.achievements-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.achievement-card {
+  display: flex;
+  padding: 20px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  background: white;
+  transition: all 0.3s;
+}
+
+.achievement-card.completed {
+  border-color: #28a745;
+  background: #f0fff4;
+}
+
+.achievement-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.achievement-icon {
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.achievement-icon i {
+  font-size: 30px;
+  color: white;
+}
+
+.achievement-card.completed .achievement-icon {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+}
+
+.achievement-info {
+  flex: 1;
+}
+
+.achievement-info h5 {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.achievement-info p {
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+.progress {
+  height: 25px;
+  background-color: #e9ecef;
+}
+
+.progress-bar {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.reward {
+  font-weight: 600;
+  color: #333;
+}

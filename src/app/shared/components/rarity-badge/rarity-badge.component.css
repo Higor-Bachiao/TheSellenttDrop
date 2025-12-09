@@ -1,0 +1,36 @@
+.badge {
+  font-size: 0.85rem;
+  padding: 0.4em 0.8em;
+  font-weight: 600;
+}
+
+.rarity-common {
+  background-color: #6c757d;
+  color: white;
+}
+
+.rarity-rare {
+  background-color: #0d6efd;
+  color: white;
+}
+
+.rarity-epic {
+  background-color: #6f42c1;
+  color: white;
+}
+
+.rarity-legendary {
+  background: linear-gradient(135deg, #ffd700, #ff8c00);
+  color: #000;
+  font-weight: bold;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+  }
+}

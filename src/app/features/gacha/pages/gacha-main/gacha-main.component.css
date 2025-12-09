@@ -1,0 +1,98 @@
+.gacha-container {
+  padding: 20px 0;
+}
+
+.gacha-display {
+  min-height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 12px;
+  padding: 30px;
+}
+
+.gacha-animation {
+  text-align: center;
+}
+
+.gacha-animation i {
+  font-size: 120px;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.gacha-result {
+  max-width: 300px;
+  animation: zoomIn 0.5s ease-out;
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.gacha-placeholder {
+  text-align: center;
+}
+
+.stats-list {
+  font-size: 0.95rem;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.stat-item:last-child {
+  border-bottom: none;
+}
+
+.stat-label {
+  font-weight: 500;
+  color: #666;
+}
+
+.stat-value {
+  font-weight: bold;
+  color: #333;
+}
+
+.bg-purple {
+  background-color: #6f42c1 !important;
+}
+
+.btn-warning {
+  font-weight: 600;
+  transition: transform 0.2s;
+}
+
+.btn-warning:hover:not(:disabled) {
+  transform: scale(1.05);
+}
+
+.btn-warning:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
