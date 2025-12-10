@@ -1,62 +1,21 @@
-.item-management-container {
+.box-management-container {
   padding: 2rem;
   max-width: 1400px;
   margin: 0 auto;
 }
 
 .header {
-  margin-bottom: 2rem;
-}
-
-.header h1 {
-  color: #fff;
-  font-size: 2rem;
-  margin: 0 0 1rem 0;
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-}
-
-.header-actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
+  margin-bottom: 2rem;
 }
 
-.filter-group {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  flex: 1;
-}
-
-.filter-group label {
+h1 {
   color: #fff;
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-.filter-group select {
-  padding: 0.5rem 1rem;
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(255, 215, 0, 0.3);
-  border-radius: 8px;
-  color: #fff;
-  font-size: 1rem;
-  cursor: pointer;
-  min-width: 200px;
-  transition: all 0.3s ease;
-}
-
-.filter-group select:hover {
-  border-color: rgba(255, 215, 0, 0.5);
-  background: rgba(255, 255, 255, 0.15);
-}
-
-.filter-group select:focus {
-  outline: none;
-  border-color: #ffd700;
-  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  font-size: 2rem;
+  margin: 0;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
 .btn-add {
@@ -72,7 +31,6 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  white-space: nowrap;
 }
 
 .btn-add:hover {
@@ -98,89 +56,83 @@
   border-radius: 8px;
 }
 
-.items-grid {
+.boxes-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1.5rem;
 }
 
-.item-card {
+.box-card {
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(20px);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
+  border: 2px solid rgba(255, 215, 0, 0.3);
+  border-radius: 16px;
   padding: 1.5rem;
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
 }
 
-.item-card:hover {
+.box-card:hover {
   transform: translateY(-5px);
   border-color: #ffd700;
   box-shadow: 0 8px 32px rgba(255, 215, 0, 0.3);
 }
 
-.item-image {
+.box-image {
   width: 100%;
   height: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
+  border-radius: 12px;
   margin-bottom: 1rem;
   overflow: hidden;
 }
 
-.item-image img {
+.box-image img {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
 }
 
-.item-info {
+.box-info {
   flex: 1;
   margin-bottom: 1rem;
 }
 
-.item-info h3 {
+.box-info h3 {
   color: #fff;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   margin: 0 0 0.5rem 0;
 }
 
-.item-box {
+.box-description {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  margin: 0 0 0.75rem 0;
+  line-height: 1.4;
+}
+
+.box-cost {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 0.5rem;
   color: #ffd700;
-  font-weight: 500;
-  font-size: 0.9rem;
+  font-weight: 700;
+  font-size: 1.1rem;
 }
 
-.item-rarity, .item-drop-rate {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
+.box-cost i {
+  font-size: 1.3rem;
 }
 
-.item-rarity {
-  font-size: 1rem;
-  text-transform: uppercase;
-}
-
-.item-drop-rate {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 0.9rem;
-}
-
-.item-actions {
+.box-actions {
   display: flex;
   gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .btn-edit, .btn-delete {
@@ -301,26 +253,27 @@ form {
 }
 
 .form-group input,
-.form-group select {
+.form-group textarea {
   padding: 0.75rem;
   background: rgba(0, 0, 0, 0.5);
   border: 2px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
   color: #fff;
   font-size: 1rem;
+  font-family: inherit;
   transition: all 0.3s ease;
 }
 
 .form-group input:focus,
-.form-group select:focus {
+.form-group textarea:focus {
   outline: none;
   border-color: #ffd700;
   box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
 }
 
-.form-group select {
-  cursor: pointer;
-  font-weight: 600;
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
 }
 
 .form-group small {

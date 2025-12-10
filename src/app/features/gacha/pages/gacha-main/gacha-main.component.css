@@ -1,98 +1,218 @@
-.gacha-container {
-  padding: 20px 0;
+.gacha-main-container {
+  padding: 2rem;
+  min-height: 100vh;
 }
 
-.gacha-display {
-  min-height: 400px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  border-radius: 12px;
-  padding: 30px;
-}
-
-.gacha-animation {
+/* Header */
+.header {
   text-align: center;
+  margin-bottom: 3rem;
 }
 
-.gacha-animation i {
-  font-size: 120px;
+.title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #f97316;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  text-shadow: 0 0 30px rgba(249, 115, 22, 0.5);
 }
 
-.spin {
+.subtitle {
+  font-size: 1.25rem;
+  color: #d1d5db;
+}
+
+/* Loading */
+.loading {
+  text-align: center;
+  padding: 4rem;
+}
+
+.loading i {
+  font-size: 3rem;
+  color: #f97316;
+  margin-bottom: 1rem;
+}
+
+.spinning {
   animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
-.gacha-result {
-  max-width: 300px;
-  animation: zoomIn 0.5s ease-out;
+/* Boxes Grid */
+.boxes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-@keyframes zoomIn {
-  from {
-    transform: scale(0);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
+.box-card {
+  background: rgba(0, 0, 0, 0.6);
+  border: 2px solid #f97316;
+  border-radius: 1rem;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
-.gacha-placeholder {
-  text-align: center;
+.box-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(249, 115, 22, 0.4);
+  border-color: #fb923c;
 }
 
-.stats-list {
-  font-size: 0.95rem;
+.box-card:hover .box-overlay {
+  opacity: 1;
 }
 
-.stat-item {
+.box-image {
+  width: 100%;
+  height: 250px;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.box-image::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, 
+    rgba(249, 115, 22, 0.1) 0%, 
+    transparent 50%, 
+    rgba(249, 115, 22, 0.1) 100%);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
+}
+
+.box-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 1rem;
+  z-index: 1;
+}
+
+.box-info {
+  padding: 1.5rem;
+}
+
+.box-name {
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 0.75rem;
+}
+
+.box-description {
+  color: #9ca3af;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  min-height: 3rem;
+}
+
+.box-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid #eee;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(249, 115, 22, 0.3);
 }
 
-.stat-item:last-child {
-  border-bottom: none;
-}
-
-.stat-label {
-  font-weight: 500;
-  color: #666;
-}
-
-.stat-value {
-  font-weight: bold;
-  color: #333;
-}
-
-.bg-purple {
-  background-color: #6f42c1 !important;
-}
-
-.btn-warning {
+.box-cost,
+.box-items-count {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.125rem;
   font-weight: 600;
-  transition: transform 0.2s;
 }
 
-.btn-warning:hover:not(:disabled) {
-  transform: scale(1.05);
+.box-cost {
+  color: #fbbf24;
 }
 
-.btn-warning:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+.box-items-count {
+  color: #60a5fa;
+}
+
+.box-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(249, 115, 22, 0.95);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.box-overlay i {
+  font-size: 3rem;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 4rem;
+  color: #9ca3af;
+}
+
+.empty-state i {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.empty-state p {
+  font-size: 1.25rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .gacha-main-container {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .boxes-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .box-image {
+    height: 200px;
+  }
 }

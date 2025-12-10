@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { register, getUserData, verifyToken, getCurrentUser } from '../controllers/auth.controller';
+import { register, getUserData, verifyToken, getCurrentUser, promoteToAdmin, verifyEmail } from '../controllers/auth.controller';
 
 const router = Router();
 
@@ -14,5 +14,11 @@ router.post('/verify', verifyToken);
 
 // GET /api/auth/me - Buscar usuário atual (com token)
 router.get('/me', getCurrentUser);
+
+// POST /api/auth/promote-admin - Promover usuário a admin (apenas desenvolvimento)
+router.post('/promote-admin', promoteToAdmin);
+
+// POST /api/auth/verify-email - Verificar email manualmente (apenas desenvolvimento)
+router.post('/verify-email', verifyEmail);
 
 export default router;

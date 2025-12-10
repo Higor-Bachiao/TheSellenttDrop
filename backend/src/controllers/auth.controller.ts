@@ -138,9 +138,14 @@ export async function getUserData(req: Request, res: Response) {
       });
     }
 
+    const userData = userDoc.data();
+    
     res.json({
       success: true,
-      data: userDoc.data()
+      data: {
+        ...userData,
+        isAdmin: userData?.role === 'ADMIN'
+      }
     });
   } catch (error: any) {
     console.error('Erro ao buscar usuário:', error);
@@ -212,15 +217,130 @@ export async function getCurrentUser(req: Request, res: Response) {
       });
     }
 
+    const userData = userDoc.data();
+
     res.json({
       success: true,
-      data: userDoc.data()
+      data: {
+        ...userData,
+        isAdmin: userData?.role === 'ADMIN'
+      }
     });
   } catch (error: any) {
     console.error('Erro ao buscar usuário atual:', error);
     res.status(401).json({
       success: false,
       error: 'Token inválido ou expirado'
+    });
+  }
+}
+
+// Rota especial para promover usuário a admin (apenas para desenvolvimento)
+export async function promoteToAdmin(req: Request, res: Response) {
+  try {
+    const { email, secretKey } = req.body;
+
+    // Chave secreta para proteger esta rota (em produção, use variável de ambiente)
+    if (secretKey !== 'admin-secret-2024') {
+      return res.status(403).json({
+        success: false,
+        error: 'Chave secreta inválida'
+      });
+    }
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        error: 'Email é obrigatório'
+      });
+    }
+
+    // Buscar usuário por email
+    const userRecord = await auth.getUserByEmail(email);
+
+    // Atualizar role no Firestore
+    await firestore.collection(collections.users).doc(userRecord.uid).update({
+      role: UserRole.ADMIN,
+      updatedAt: new Date()
+    });
+
+    res.json({
+      success: true,
+      message: `Usuário ${email} promovido a ADMIN com sucesso!`,
+      data: {
+        uid: userRecord.uid,
+        email: userRecord.email,
+        role: 'ADMIN'
+      }
+    });
+  } catch (error: any) {
+    console.error('Erro ao promover usuário:', error);
+    
+    let errorMessage = 'Erro ao promover usuário';
+    if (error.code === 'auth/user-not-found') {
+      errorMessage = 'Usuário não encontrado';
+    }
+
+    res.status(400).json({
+      success: false,
+      error: errorMessage
+    });
+  }
+}
+
+// Verificar email manualmente (apenas desenvolvimento)
+export async function verifyEmail(req: Request, res: Response) {
+  try {
+    const { email, secretKey } = req.body;
+
+    if (secretKey !== 'admin-secret-2024') {
+      return res.status(403).json({
+        success: false,
+        error: 'Chave secreta inválida'
+      });
+    }
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        error: 'Email é obrigatório'
+      });
+    }
+
+    // Buscar usuário por email
+    const userRecord = await auth.getUserByEmail(email);
+
+    // Atualizar emailVerified no Firebase Auth
+    await auth.updateUser(userRecord.uid, {
+      emailVerified: true
+    });
+
+    // Atualizar no Firestore
+    await firestore.collection(collections.users).doc(userRecord.uid).update({
+      emailVerified: true,
+      updatedAt: new Date()
+    });
+
+    res.json({
+      success: true,
+      message: `Email ${email} verificado com sucesso!`,
+      data: {
+        uid: userRecord.uid,
+        email: userRecord.email,
+        emailVerified: true
+      }
+    });
+  } catch (error: any) {
+    console.error('Erro ao verificar email:', error);
+    
+    let errorMessage = 'Erro ao verificar email';
+    if (error.code === 'auth/user-not-found') {
+      errorMessage = 'Usuário não encontrado';
+    }
+
+    res.status(400).json({
+      success: false,
+      error: errorMessage
     });
   }
 }

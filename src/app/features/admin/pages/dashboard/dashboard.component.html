@@ -1,1 +1,71 @@
-<p>dashboard works!</p>
+<div class="admin-dashboard">
+  <h1>🛡️ Painel de Administração</h1>
+  <p class="subtitle">Bem-vindo ao painel de controle do sistema</p>
+
+  <div class="admin-cards">
+    <a routerLink="/admin/users" class="admin-card">
+      <div class="card-icon">
+        <i class="bi bi-people"></i>
+      </div>
+      <div class="card-content">
+        <h2>Gerenciar Usuários</h2>
+        <p>Visualize, edite roles e veja itens dos usuários</p>
+      </div>
+      <div class="card-arrow">
+        <i class="bi bi-arrow-right"></i>
+      </div>
+    </a>
+
+    <a routerLink="/admin/boxes" class="admin-card">
+      <div class="card-icon">
+        <i class="bi bi-box"></i>
+      </div>
+      <div class="card-content">
+        <h2>Gerenciar Caixas</h2>
+        <p>Crie, edite ou remova caixas do gacha</p>
+      </div>
+      <div class="card-arrow">
+        <i class="bi bi-arrow-right"></i>
+      </div>
+    </a>
+
+    <a routerLink="/admin/items" class="admin-card">
+      <div class="card-icon">
+        <i class="bi bi-gem"></i>
+      </div>
+      <div class="card-content">
+        <h2>Gerenciar Itens</h2>
+        <p>Adicione, edite ou remova itens das caixas</p>
+      </div>
+      <div class="card-arrow">
+        <i class="bi bi-arrow-right"></i>
+      </div>
+    </a>
+  </div>
+
+  <div class="info-section">
+    <h3>📋 Funcionalidades Administrativas</h3>
+    <ul>
+      <li>
+        <i class="bi bi-check-circle"></i>
+        <strong>Gestão de Usuários:</strong> Altere roles entre ADMIN e JOGADOR
+      </li>
+      <li>
+        <i class="bi bi-check-circle"></i>
+        <strong>Visualização de Inventários:</strong> Veja todos os itens que cada usuário possui
+      </li>
+      <li>
+        <i class="bi bi-check-circle"></i>
+        <strong>Gerenciamento de Caixas:</strong> Crie e gerencie diferentes caixas do gacha
+      </li>
+      <li>
+        <i class="bi bi-check-circle"></i>
+        <strong>CRUD de Itens:</strong> Controle completo sobre os itens de cada caixa
+      </li>
+      <li>
+        <i class="bi bi-check-circle"></i>
+        <strong>Configuração de Raridades:</strong> Defina porcentagens de drop para cada item
+      </li>
+    </ul>
+  </div>
+</div>

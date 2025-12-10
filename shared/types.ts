@@ -17,19 +17,39 @@ export interface User {
   email: string;
   displayName: string;
   role: UserRole;
+  isAdmin?: boolean;
   coins: number;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export enum ItemRarity {
+  COMUM = 'comum',
+  INCOMUM = 'incomum',
+  RARO = 'raro',
+  EPICO = 'epico',
+  LENDARIO = 'lendario'
 }
 
 export interface Item {
   id: string;
   name: string;
   description: string;
-  rarity: 'comum' | 'incomum' | 'raro' | 'epico' | 'lendario';
+  rarity: ItemRarity;
   imageUrl: string;
-  dropRate: number;
-  dropChance: number; // Probabilidade 0-100%
+  dropRate: number; // Peso para cálculo de probabilidade (ex: 50 = 50% do total)
+  boxId?: string; // ID da box que contém este item
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface GachaBox {
+  id: string;
+  name: string;
+  description: string;
+  imageUrl: string;
+  cost: number; // Custo em moedas para rolar
+  items: Item[]; // Itens disponíveis nesta box
   createdAt: Date;
   updatedAt: Date;
 }

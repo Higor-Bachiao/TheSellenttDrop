@@ -1,0 +1,114 @@
+<div class="box-management-container">
+  <div class="header">
+    <h1>Gerenciamento de Caixas</h1>
+    <button class="btn-add" (click)="openAddModal()">
+      <i class="bi bi-plus-circle"></i> Adicionar Caixa
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <i class="bi bi-arrow-repeat spin"></i> Carregando caixas...
+  </div>
+
+  <div *ngIf="error" class="error">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && !error" class="boxes-grid">
+    <div class="box-card" *ngFor="let box of boxes">
+      <div class="box-image">
+        <img [src]="box.imageUrl" [alt]="box.name">
+      </div>
+      <div class="box-info">
+        <h3>{{ box.name }}</h3>
+        <p class="box-description">{{ box.description }}</p>
+        <div class="box-cost">
+          <i class="bi bi-coin"></i> {{ box.cost }} moedas
+        </div>
+      </div>
+      <div class="box-actions">
+        <button class="btn-edit" (click)="openEditModal(box)">
+          <i class="bi bi-pencil"></i> Editar
+        </button>
+        <button class="btn-delete" (click)="deleteBox(box.id)">
+          <i class="bi bi-trash"></i> Deletar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Adicionar/Editar Box -->
+  <div class="modal-backdrop" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ editingBox ? 'Editar Caixa' : 'Adicionar Caixa' }}</h2>
+        <button class="btn-close" (click)="closeModal()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="saveBox()">
+          <div class="form-group">
+            <label for="name">Nome da Caixa</label>
+            <input
+              type="text"
+              id="name"
+              [(ngModel)]="formData.name"
+              name="name"
+              required
+              placeholder="Ex: Caixa Misteriosa"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="description">Descrição</label>
+            <textarea
+              id="description"
+              [(ngModel)]="formData.description"
+              name="description"
+              rows="3"
+              placeholder="Descreva o que pode ser encontrado nesta caixa..."
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="imageUrl">URL da Imagem</label>
+            <input
+              type="url"
+              id="imageUrl"
+              [(ngModel)]="formData.imageUrl"
+              name="imageUrl"
+              placeholder="https://exemplo.com/imagem.png"
+            >
+            <div class="image-preview" *ngIf="formData.imageUrl">
+              <img [src]="formData.imageUrl" alt="Preview">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="cost">Custo (Moedas)</label>
+            <input
+              type="number"
+              id="cost"
+              [(ngModel)]="formData.cost"
+              name="cost"
+              required
+              min="1"
+              placeholder="Ex: 100"
+            >
+            <small>Quantidade de moedas necessárias para abrir esta caixa</small>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-cancel" (click)="closeModal()">
+              Cancelar
+            </button>
+            <button type="submit" class="btn-save">
+              <i class="bi bi-check-circle"></i> Salvar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

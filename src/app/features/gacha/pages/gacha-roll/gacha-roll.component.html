@@ -1,0 +1,131 @@
+<div class="gacha-container">
+  <!-- Gacha Box -->
+  <div class="gacha-box" *ngIf="currentBox">
+    <div class="box-header">
+      <h1 class="box-title">{{ currentBox.name }}</h1>
+      <p class="box-description">{{ currentBox.description }}</p>
+    </div>
+
+    <!-- Items Grid -->
+    <div class="items-grid">
+      <div 
+        *ngFor="let item of currentBox.items" 
+        class="item-card"
+        [class]="getRarityClass(item.rarity)"
+      >
+        <div class="item-image-wrapper">
+          <img 
+            [src]="item.imageUrl || 'assets/placeholder-item.png'" 
+            [alt]="item.name"
+            class="item-image"
+          >
+        </div>
+        <div class="item-info">
+          <h3 class="item-name">{{ item.name }}</h3>
+          <div class="item-rarity" [style.color]="getRarityColor(item.rarity)">
+            {{ item.rarity }}
+          </div>
+          <div class="item-drop-rate">
+            <i class="bi bi-percent"></i> {{ item.dropRate }}%
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slot Machine Animation -->
+    <div class="slot-machine" *ngIf="isRolling && slotItems.length > 0">
+      <div class="slot-window">
+        <div class="slot-container">
+          <div class="slot-items" [style.transform]="getSlotTransform()">
+            <div *ngFor="let item of slotItems; let i = index" 
+                 class="slot-item"
+                 [class.winning-item]="isWinningItem(i)">
+              <div class="slot-item-image">
+                <img [src]="item.imageUrl" [alt]="item.name">
+              </div>
+              <div class="slot-item-name">{{ item.name }}</div>
+              <div class="slot-item-rarity" [style.color]="getRarityColor(item.rarity)">
+                {{ item.rarity }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="slot-indicator"></div>
+      </div>
+    </div>
+
+    <!-- Roll Button -->
+    <div class="roll-section">
+      <button 
+        class="roll-button"
+        [class.rolling]="isRolling"
+        [disabled]="isRolling || (currentUser$ | async)?.coins! < currentBox.cost"
+        (click)="rollGacha()"
+      >
+        <span *ngIf="!isRolling">
+          <i class="bi bi-dice-5"></i>
+          Girar ({{ currentBox.cost }} <i class="bi bi-coin"></i>)
+        </span>
+        <span *ngIf="isRolling" class="rolling-text">
+          <i class="bi bi-arrow-repeat spinning"></i>
+          Girando...
+        </span>
+      </button>
+      
+      <p class="insufficient-coins" *ngIf="(currentUser$ | async)?.coins! < currentBox.cost">
+        <i class="bi bi-exclamation-circle"></i>
+        Moedas insuficientes
+      </p>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading" *ngIf="!currentBox">
+    <i class="bi bi-arrow-repeat spinning"></i>
+    <p>Carregando caixa...</p>
+  </div>
+
+  <!-- Result Modal -->
+  <div class="result-overlay" *ngIf="showResult" (click)="showResult = false">
+    <div class="result-modal" (click)="$event.stopPropagation()">
+      <button class="close-button" (click)="showResult = false">
+        <i class="bi bi-x-lg"></i>
+      </button>
+      
+      <div class="result-content" *ngIf="result">
+        <div class="result-badge" *ngIf="result.isNew">
+          <i class="bi bi-star-fill"></i> NOVO!
+        </div>
+        
+        <div class="result-item" [class]="getRarityClass(result.item.rarity)">
+          <div class="result-glow"></div>
+          <img 
+            [src]="result.item.imageUrl || 'assets/placeholder-item.png'" 
+            [alt]="result.item.name"
+            class="result-image"
+          >
+        </div>
+        
+        <h2 class="result-name">{{ result.item.name }}</h2>
+        <div class="result-rarity" [style.color]="getRarityColor(result.item.rarity)">
+          {{ result.item.rarity }}
+        </div>
+        
+        <div class="result-stats">
+          <div class="stat">
+            <span class="stat-label">Raridade</span>
+            <span class="stat-value">{{ result.rarity }}/1000</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Quantidade Total</span>
+            <span class="stat-value">{{ result.totalQuantity }}</span>
+          </div>
+        </div>
+        
+        <button class="ok-button" (click)="showResult = false">
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

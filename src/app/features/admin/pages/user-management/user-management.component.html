@@ -1,1 +1,91 @@
-<p>user-management works!</p>
+<div class="user-management-container">
+  <h1>Gerenciamento de Usuários</h1>
+
+  <div *ngIf="loading" class="loading">
+    <i class="bi bi-arrow-repeat spin"></i> Carregando usuários...
+  </div>
+
+  <div *ngIf="error" class="error">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && !error" class="users-table-container">
+    <table class="users-table">
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Nome</th>
+          <th>Role</th>
+          <th>Moedas</th>
+          <th>Data Criação</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.email }}</td>
+          <td>{{ user.displayName || '—' }}</td>
+          <td>
+            <select 
+              [value]="user.role" 
+              (change)="updateUserRole(user.uid, $any($event.target).value)"
+              class="role-select"
+              [class.admin]="user.role === 'ADMIN'"
+              [class.jogador]="user.role === 'JOGADOR'">
+              <option value="ADMIN">ADMIN</option>
+              <option value="JOGADOR">JOGADOR</option>
+            </select>
+          </td>
+          <td>
+            <span class="coins">
+              <i class="bi bi-coin"></i> {{ user.coins }}
+            </span>
+          </td>
+          <td>{{ user.createdAt?.toDate?.() | date:'dd/MM/yyyy HH:mm' || '—' }}</td>
+          <td>
+            <button class="btn-view-items" (click)="viewUserItems(user)">
+              <i class="bi bi-box-seam"></i> Ver Itens
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal de Itens do Usuário -->
+  <div class="modal-backdrop" *ngIf="showItemsModal" (click)="closeItemsModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Itens de {{ selectedUser?.displayName || selectedUser?.email }}</h2>
+        <button class="btn-close" (click)="closeItemsModal()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="userItems.length === 0" class="no-items">
+          <i class="bi bi-inbox"></i>
+          <p>Este usuário ainda não possui itens.</p>
+        </div>
+        <div class="items-grid" *ngIf="userItems.length > 0">
+          <div class="item-card" *ngFor="let userItem of userItems">
+            <div class="item-image">
+              <img [src]="userItem.item.imageUrl" [alt]="userItem.item.name">
+            </div>
+            <div class="item-info">
+              <h3>{{ userItem.item.name }}</h3>
+              <div class="item-rarity" [style.color]="getRarityColor(userItem.rarity)">
+                {{ getRarityTier(userItem.rarity) }} - {{ userItem.rarity }}
+              </div>
+              <div class="item-quantity">
+                Quantidade: {{ userItem.quantity }}
+              </div>
+              <div class="item-date">
+                Obtido em: {{ userItem.obtainedAt?.toDate?.() | date:'dd/MM/yyyy' || '—' }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

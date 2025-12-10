@@ -1,1 +1,149 @@
-<p>item-management works!</p>
+<div class="item-management-container">
+  <div class="header">
+    <h1>Gerenciamento de Itens</h1>
+    <div class="header-actions">
+      <div class="filter-group">
+        <label for="boxFilter">Filtrar por Caixa:</label>
+        <select id="boxFilter" [(ngModel)]="selectedBoxId" (change)="onBoxFilterChange()">
+          <option value="all">Todas as Caixas</option>
+          <option *ngFor="let box of boxes" [value]="box.id">{{ box.name }}</option>
+        </select>
+      </div>
+      <button class="btn-add" (click)="openAddModal()">
+        <i class="bi bi-plus-circle"></i> Adicionar Item
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <i class="bi bi-arrow-repeat spin"></i> Carregando itens...
+  </div>
+
+  <div *ngIf="error" class="error">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && !error" class="items-grid">
+    <div class="item-card" *ngFor="let item of items">
+      <div class="item-image">
+        <img [src]="item.imageUrl" [alt]="item.name">
+      </div>
+      <div class="item-info">
+        <h3>{{ item.name }}</h3>
+        <div class="item-box">
+          <i class="bi bi-box"></i> {{ getBoxName(item.boxId) }}
+        </div>
+        <div class="item-rarity" [style.color]="getRarityColor(item.rarity)">
+          <i class="bi bi-gem"></i> {{ item.rarity | titlecase }}
+        </div>
+        <div class="item-drop-rate">
+          <i class="bi bi-percent"></i> Drop Rate: {{ item.dropRate }}%
+        </div>
+      </div>
+      <div class="item-actions">
+        <button class="btn-edit" (click)="openEditModal(item)">
+          <i class="bi bi-pencil"></i> Editar
+        </button>
+        <button class="btn-delete" (click)="deleteItem(item.id)">
+          <i class="bi bi-trash"></i> Deletar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Adicionar/Editar Item -->
+  <div class="modal-backdrop" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ editingItem ? 'Editar Item' : 'Adicionar Item' }}</h2>
+        <button class="btn-close" (click)="closeModal()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="saveItem()">
+          <div class="form-group">
+            <label for="name">Nome do Item</label>
+            <input
+              type="text"
+              id="name"
+              [(ngModel)]="formData.name"
+              name="name"
+              required
+              placeholder="Ex: Espada Lendária"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="imageUrl">URL da Imagem</label>
+            <input
+              type="url"
+              id="imageUrl"
+              [(ngModel)]="formData.imageUrl"
+              name="imageUrl"
+              required
+              placeholder="https://exemplo.com/imagem.png"
+            >
+            <div class="image-preview" *ngIf="formData.imageUrl">
+              <img [src]="formData.imageUrl" alt="Preview">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="boxId">Caixa *</label>
+            <select
+              id="boxId"
+              [(ngModel)]="formData.boxId"
+              name="boxId"
+              required
+            >
+              <option value="">Selecione uma caixa</option>
+              <option *ngFor="let box of boxes" [value]="box.id">{{ box.name }}</option>
+            </select>
+            <small>Selecione a caixa onde este item ficará disponível</small>
+          </div>
+
+          <div class="form-group">
+            <label for="rarity">Raridade</label>
+            <select
+              id="rarity"
+              [(ngModel)]="formData.rarity"
+              name="rarity"
+              required
+              [style.color]="getRarityColor(formData.rarity)"
+            >
+              <option *ngFor="let rarity of rarityOptions" [value]="rarity">
+                {{ rarity | titlecase }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="dropRate">Drop Rate (%)</label>
+            <input
+              type="number"
+              id="dropRate"
+              [(ngModel)]="formData.dropRate"
+              name="dropRate"
+              required
+              min="0"
+              max="100"
+              step="0.1"
+              placeholder="Ex: 10.5"
+            >
+            <small>Probabilidade de drop (0-100%)</small>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-cancel" (click)="closeModal()">
+              Cancelar
+            </button>
+            <button type="submit" class="btn-save">
+              <i class="bi bi-check-circle"></i> Salvar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

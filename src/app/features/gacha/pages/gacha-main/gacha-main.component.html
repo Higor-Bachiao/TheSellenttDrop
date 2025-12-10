@@ -1,1 +1,56 @@
-<p>gacha-main works!</p>
+<div class="gacha-main-container">
+  <div class="header">
+    <h1 class="title">
+      <i class="bi bi-box-seam"></i>
+      Caixas Gacha
+    </h1>
+    <p class="subtitle">Escolha uma caixa para abrir e ganhar itens incríveis!</p>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading" *ngIf="loading">
+    <i class="bi bi-arrow-repeat spinning"></i>
+    <p>Carregando caixas...</p>
+  </div>
+
+  <!-- Boxes Grid -->
+  <div class="boxes-grid" *ngIf="!loading">
+    <div 
+      *ngFor="let box of boxes" 
+      class="box-card"
+      (click)="openBox(box.id)"
+    >
+      <div class="box-image">
+        <img 
+          [src]="box.imageUrl || 'assets/placeholder-box.png'" 
+          [alt]="box.name"
+        >
+      </div>
+      <div class="box-info">
+        <h2 class="box-name">{{ box.name }}</h2>
+        <p class="box-description">{{ box.description }}</p>
+        <div class="box-footer">
+          <div class="box-cost">
+            <i class="bi bi-coin"></i>
+            <span>{{ box.cost }}</span>
+          </div>
+          <div class="box-items-count">
+            <i class="bi bi-grid-3x3-gap"></i>
+            <span>{{ box.items?.length || 0 }} itens</span>
+          </div>
+        </div>
+      </div>
+      <div class="box-overlay">
+        <i class="bi bi-box-arrow-up-right"></i>
+        <span>Abrir Caixa</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="!loading && boxes.length === 0">
+    <i class="bi bi-inbox"></i>
+    <p>Nenhuma caixa disponível no momento</p>
+  </div>
+</div>
+
