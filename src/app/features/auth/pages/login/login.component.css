@@ -1,49 +1,392 @@
+/* Container principal - Fundo preto/alaranjado estilo cassino */
 .login-container {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d1810 50%, #1a1a1a 100%);
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(255, 140, 0, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(255, 69, 0, 0.1) 0%, transparent 50%),
+    linear-gradient(135deg, #000000 0%, #1a0a00 50%, #000000 100%);
   padding: 20px;
+  position: relative;
+  overflow: hidden;
 }
 
-.login-card {
-  background: white;
-  border-radius: 16px;
-  padding: 40px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  max-width: 400px;
+/* Símbolos de caça-níquel flutuando no fundo */
+.slot-symbols {
+  position: absolute;
   width: 100%;
+  height: 100%;
+  overflow: hidden;
+  opacity: 0.15;
 }
 
-h2 {
+.slot-symbols .symbol {
+  position: absolute;
+  font-size: 3rem;
+  animation: float 20s infinite;
+}
+
+.slot-symbols .symbol:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+.slot-symbols .symbol:nth-child(2) { left: 80%; top: 10%; animation-delay: 2s; }
+.slot-symbols .symbol:nth-child(3) { left: 50%; top: 80%; animation-delay: 4s; }
+.slot-symbols .symbol:nth-child(4) { left: 20%; top: 70%; animation-delay: 6s; }
+.slot-symbols .symbol:nth-child(5) { left: 70%; top: 60%; animation-delay: 8s; }
+.slot-symbols .symbol:nth-child(6) { left: 40%; top: 30%; animation-delay: 10s; }
+.slot-symbols .symbol:nth-child(7) { left: 90%; top: 50%; animation-delay: 12s; }
+.slot-symbols .symbol:nth-child(8) { left: 15%; top: 40%; animation-delay: 14s; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  25% { transform: translateY(-20px) rotate(5deg); }
+  50% { transform: translateY(-10px) rotate(-5deg); }
+  75% { transform: translateY(-30px) rotate(3deg); }
+}
+
+/* Card branco estilo caça-níquel */
+.login-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 45px 40px;
+  box-shadow: 
+    0 0 0 8px #ff8c00,
+    0 0 0 12px #ffa500,
+    0 25px 50px rgba(0, 0, 0, 0.8),
+    inset 0 2px 4px rgba(255, 140, 0, 0.1);
+  max-width: 450px;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  animation: cardGlow 3s ease-in-out infinite;
+}
+
+@keyframes cardGlow {
+  0%, 100% { box-shadow: 0 0 0 8px #ff8c00, 0 0 0 12px #ffa500, 0 25px 50px rgba(0, 0, 0, 0.8); }
+  50% { box-shadow: 0 0 0 8px #ffa500, 0 0 0 12px #ffb84d, 0 25px 50px rgba(255, 140, 0, 0.5); }
+}
+
+/* Cabeçalho */
+.login-header {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.slot-machine-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+  background: linear-gradient(135deg, #ff8c00 0%, #ff6b00 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(255, 140, 0, 0.4);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.slot-machine-icon i {
+  font-size: 40px;
+  color: #fff;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.game-title {
+  font-size: 2rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #ff8c00 0%, #ff6b00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+  text-shadow: 2px 2px 4px rgba(255, 140, 0, 0.3);
+}
+
+.game-subtitle {
+  color: #666;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.divider {
+  height: 3px;
+  background: linear-gradient(90deg, transparent 0%, #ff8c00 50%, transparent 100%);
+  margin: 20px 0;
+}
+
+/* Alerta de verificação */
+.alert-info {
+  background: linear-gradient(135deg, #e8f4ff 0%, #d0e9ff 100%);
+  border: 2px solid #4a90e2;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.alert-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.alert-text {
+  color: #2c5282;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Formulário */
+.login-form {
+  margin-bottom: 25px;
+}
+
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-label {
+  display: block;
+  font-weight: 700;
   color: #333;
-  font-weight: bold;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
 }
 
-.btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+.form-label i {
+  color: #ff8c00;
+  margin-right: 8px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 14px 18px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: #f8f9fa;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #ff8c00;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(255, 140, 0, 0.1);
+}
+
+.form-control.is-invalid {
+  border-color: #dc3545;
+  background: #fff5f5;
+}
+
+.invalid-feedback {
+  display: block;
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 6px;
+  font-weight: 600;
+}
+
+.invalid-feedback i {
+  margin-right: 4px;
+}
+
+/* Botão de Login - Estilo caça-níquel */
+.btn-login {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #ff8c00 0%, #ff6b00 100%);
+  color: #fff;
   border: none;
-  padding: 12px;
-  font-weight: 600;
-  transition: transform 0.2s;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(255, 140, 0, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
 }
 
-.btn-primary:hover:not(:disabled) {
+.btn-login::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s;
+}
+
+.btn-login:hover::before {
+  left: 100%;
+}
+
+.btn-login:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 25px rgba(255, 140, 0, 0.6);
 }
 
-.btn-primary:disabled {
-  opacity: 0.6;
+.btn-login:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-login:disabled {
+  opacity: 0.7;
   cursor: not-allowed;
+  transform: none !important;
 }
 
-a {
-  color: #667eea;
-  font-weight: 600;
+.btn-login.loading {
+  background: linear-gradient(135deg, #ffa500 0%, #ff8c00 100%);
 }
 
-a:hover {
-  color: #764ba2;
+.btn-login i {
+  margin-right: 8px;
+}
+
+/* Spinner de loading */
+.spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Divisor com fichas */
+.register-link {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.chips-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.chip {
+  font-size: 1.5rem;
+  animation: rotate 3s linear infinite;
+}
+
+.chips-divider .text {
+  color: #999;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.register-link p {
+  color: #666;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.link-register {
+  color: #ff8c00;
+  text-decoration: none;
+  font-weight: 700;
+  transition: all 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.link-register:hover {
+  color: #ff6b00;
+  transform: translateX(3px);
+}
+
+/* Footer */
+.login-footer {
+  text-align: center;
+  margin-top: 30px;
+  padding-top: 25px;
+  border-top: 2px solid #f0f0f0;
+}
+
+.jackpot-text {
+  color: #ff8c00;
+  font-weight: 900;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  animation: jackpotGlow 2s ease-in-out infinite;
+}
+
+@keyframes jackpotGlow {
+  0%, 100% { text-shadow: 0 0 10px rgba(255, 140, 0, 0.5); }
+  50% { text-shadow: 0 0 20px rgba(255, 140, 0, 0.8), 0 0 30px rgba(255, 140, 0, 0.6); }
+}
+
+.blink {
+  animation: blink 1.5s ease-in-out infinite;
+  color: #ffd700;
+  font-size: 1.5rem;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .login-card {
+    padding: 35px 25px;
+    max-width: 100%;
+  }
+
+  .game-title {
+    font-size: 1.6rem;
+  }
+
+  .slot-machine-icon {
+    width: 70px;
+    height: 70px;
+  }
+
+  .slot-machine-icon i {
+    font-size: 35px;
+  }
 }

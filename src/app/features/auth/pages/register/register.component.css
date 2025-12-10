@@ -1,32 +1,335 @@
+/* Container with casino theme background */
 .register-container {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 20px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d1810 50%, #1a1a1a 100%);
 }
 
+/* Add orange glow effects */
+.register-container::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 140, 0, 0.1) 0%, transparent 70%);
+  animation: rotate 20s linear infinite;
+}
+
+.register-container::after {
+  content: '';
+  position: absolute;
+  bottom: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 165, 0, 0.1) 0%, transparent 70%);
+  animation: rotate 25s linear infinite reverse;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Floating slot machine symbols */
+.slot-symbols {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.slot-symbols .symbol {
+  position: absolute;
+  font-size: 3rem;
+  opacity: 0.15;
+  animation: float 20s ease-in-out infinite;
+}
+
+.slot-symbols .symbol:nth-child(1) { animation-delay: 0s; }
+.slot-symbols .symbol:nth-child(2) { animation-delay: 2.5s; }
+.slot-symbols .symbol:nth-child(3) { animation-delay: 5s; }
+.slot-symbols .symbol:nth-child(4) { animation-delay: 7.5s; }
+.slot-symbols .symbol:nth-child(5) { animation-delay: 10s; }
+.slot-symbols .symbol:nth-child(6) { animation-delay: 12.5s; }
+.slot-symbols .symbol:nth-child(7) { animation-delay: 15s; }
+.slot-symbols .symbol:nth-child(8) { animation-delay: 17.5s; }
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-30px) rotate(180deg);
+  }
+}
+
+/* White card with orange border */
 .register-card {
   background: white;
-  border-radius: 16px;
+  border-radius: 20px;
   padding: 40px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  max-width: 400px;
+  box-shadow: 
+    0 0 0 8px #ff8c00,
+    0 0 0 12px #ffa500,
+    0 20px 60px rgba(0, 0, 0, 0.5);
+  max-width: 450px;
   width: 100%;
+  position: relative;
+  z-index: 2;
+  animation: cardGlow 3s ease-in-out infinite alternate;
 }
 
-h2 {
+@keyframes cardGlow {
+  from {
+    box-shadow: 
+      0 0 0 8px #ff8c00,
+      0 0 0 12px #ffa500,
+      0 20px 60px rgba(0, 0, 0, 0.5);
+  }
+  to {
+    box-shadow: 
+      0 0 0 10px #ff8c00,
+      0 0 0 15px #ffa500,
+      0 0 50px rgba(255, 140, 0, 0.4),
+      0 20px 60px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Slot machine icon */
+.slot-machine-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+  background: linear-gradient(135deg, #ff8c00, #ffa500);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  box-shadow: 0 4px 20px rgba(255, 140, 0, 0.4);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* Title and subtitle */
+.register-title {
   color: #333;
   font-weight: bold;
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 8px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border: none;
-  padding: 12px;
+.register-subtitle {
+  text-align: center;
+  color: #666;
+  margin-bottom: 30px;
+  font-size: 1.1rem;
+}
+
+/* Form styles */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
   font-weight: 600;
-  transition: transform 0.2s;
+  font-size: 0.95rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #ff8c00;
+  box-shadow: 0 0 0 3px rgba(255, 140, 0, 0.1);
+}
+
+.form-control.is-invalid {
+  border-color: #dc3545;
+}
+
+.form-control.is-invalid:focus {
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+}
+
+.invalid-feedback {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 4px;
+  display: block;
+}
+
+/* Register button */
+.btn-register {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #ff8c00, #ffa500);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.btn-register::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s;
+}
+
+.btn-register:hover::before {
+  left: 100%;
+}
+
+.btn-register:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 140, 0, 0.4);
+}
+
+.btn-register:active {
+  transform: translateY(0);
+}
+
+.btn-register:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Divider */
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 25px 0;
+  color: #999;
+  font-size: 0.9rem;
+}
+
+.chip {
+  font-size: 1.5rem;
+  animation: rotate-chip 3s linear infinite;
+}
+
+@keyframes rotate-chip {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Login link */
+.register-link {
+  text-align: center;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.register-link a {
+  color: #ff8c00;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.register-link a:hover {
+  color: #ffa500;
+  text-decoration: underline;
+}
+
+/* Jackpot decoration */
+.jackpot-text {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #ff8c00;
+  margin-top: 20px;
+  text-shadow: 0 0 10px rgba(255, 140, 0, 0.5);
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 10px rgba(255, 140, 0, 0.5);
+  }
+  to {
+    text-shadow: 0 0 20px rgba(255, 140, 0, 0.8), 0 0 30px rgba(255, 140, 0, 0.6);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .register-card {
+    padding: 30px 20px;
+  }
+
+  .register-title {
+    font-size: 1.6rem;
+  }
+
+  .slot-symbols .symbol {
+    font-size: 2rem;
+  }
+
+  .slot-machine-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 2rem;
+  }
 }
 
 .btn-primary:hover:not(:disabled) {

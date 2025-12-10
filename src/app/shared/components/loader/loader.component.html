@@ -1,1 +1,22 @@
-<p>loader works!</p>
+<div class="loader-overlay" *ngIf="isLoading$ | async">
+  <div class="loader-content">
+    <div class="slot-machine-loader">
+      <div class="reel">
+        <span>🍒</span>
+        <span>💎</span>
+        <span>⭐</span>
+      </div>
+      <div class="reel">
+        <span>7️⃣</span>
+        <span>🍋</span>
+        <span>🔔</span>
+      </div>
+      <div class="reel">
+        <span>💰</span>
+        <span>🎰</span>
+        <span>🍒</span>
+      </div>
+    </div>
+    <p class="loader-text">Carregando...</p>
+  </div>
+</div>

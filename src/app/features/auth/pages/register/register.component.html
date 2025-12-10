@@ -1,1 +1,119 @@
-<p>register works!</p>
+<div class="register-container">
+  <!-- Floating slot machine symbols -->
+  <div class="slot-symbols">
+    <span class="symbol" style="left: 5%; top: 10%;">🍒</span>
+    <span class="symbol" style="left: 15%; top: 80%;">💎</span>
+    <span class="symbol" style="right: 10%; top: 15%;">⭐</span>
+    <span class="symbol" style="right: 20%; top: 75%;">🎰</span>
+    <span class="symbol" style="left: 8%; top: 45%;">7️⃣</span>
+    <span class="symbol" style="right: 12%; top: 50%;">🍋</span>
+    <span class="symbol" style="left: 25%; top: 25%;">🔔</span>
+    <span class="symbol" style="right: 25%; top: 85%;">💰</span>
+  </div>
+
+  <!-- Register Card -->
+  <div class="register-card">
+    <div class="slot-machine-icon">
+      <span class="dice">🎲</span>
+    </div>
+    
+    <h2 class="register-title">Criar Conta</h2>
+    <p class="register-subtitle">Junte-se ao cassino! 🎰</p>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <!-- Display Name Field -->
+      <div class="form-group">
+        <label for="displayName">Nome de Usuário</label>
+        <input 
+          type="text" 
+          id="displayName" 
+          formControlName="displayName"
+          class="form-control"
+          [class.is-invalid]="displayName?.invalid && displayName?.touched"
+          placeholder="Digite seu nome"
+        />
+        <div class="invalid-feedback" *ngIf="displayName?.invalid && displayName?.touched">
+          <span *ngIf="displayName?.errors?.['required']">Nome é obrigatório</span>
+          <span *ngIf="displayName?.errors?.['minlength']">Nome deve ter no mínimo 3 caracteres</span>
+        </div>
+      </div>
+
+      <!-- Email Field -->
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input 
+          type="email" 
+          id="email" 
+          formControlName="email"
+          class="form-control"
+          [class.is-invalid]="email?.invalid && email?.touched"
+          placeholder="seu@email.com"
+        />
+        <div class="invalid-feedback" *ngIf="email?.invalid && email?.touched">
+          <span *ngIf="email?.errors?.['required']">E-mail é obrigatório</span>
+          <span *ngIf="email?.errors?.['email']">E-mail inválido</span>
+        </div>
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label for="password">Senha</label>
+        <input 
+          type="password" 
+          id="password" 
+          formControlName="password"
+          class="form-control"
+          [class.is-invalid]="password?.invalid && password?.touched"
+          placeholder="Mínimo 6 caracteres"
+        />
+        <div class="invalid-feedback" *ngIf="password?.invalid && password?.touched">
+          <span *ngIf="password?.errors?.['required']">Senha é obrigatória</span>
+          <span *ngIf="password?.errors?.['minlength']">Senha deve ter no mínimo 6 caracteres</span>
+        </div>
+      </div>
+
+      <!-- Confirm Password Field -->
+      <div class="form-group">
+        <label for="confirmPassword">Confirmar Senha</label>
+        <input 
+          type="password" 
+          id="confirmPassword" 
+          formControlName="confirmPassword"
+          class="form-control"
+          [class.is-invalid]="confirmPassword?.invalid && confirmPassword?.touched"
+          placeholder="Digite a senha novamente"
+        />
+        <div class="invalid-feedback" *ngIf="confirmPassword?.invalid && confirmPassword?.touched">
+          <span *ngIf="confirmPassword?.errors?.['required']">Confirmação é obrigatória</span>
+          <span *ngIf="confirmPassword?.errors?.['passwordMismatch']">As senhas não coincidem</span>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button 
+        type="submit" 
+        class="btn-register" 
+        [disabled]="isLoading"
+      >
+        <span *ngIf="!isLoading">Criar Conta e Jogar! 🎯</span>
+        <span *ngIf="isLoading" class="spinner"></span>
+      </button>
+
+      <!-- Divider with chips -->
+      <div class="divider">
+        <span class="chip">🎰</span>
+        <span>ou</span>
+        <span class="chip">🎰</span>
+      </div>
+
+      <!-- Login Link -->
+      <p class="register-link">
+        Já tem uma conta?
+        <a routerLink="/auth/login">Faça login aqui</a>
+      </p>
+    </form>
+
+    <!-- Jackpot decoration -->
+    <div class="jackpot-text">🎊 Boa Sorte! 🎊</div>
+  </div>
+</div>

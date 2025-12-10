@@ -1,1 +1,42 @@
-<p>header works!</p>
+<header class="header" *ngIf="currentUser$ | async as user">
+  <div class="container">
+    <div class="header-content">
+      <div class="logo">
+        <span class="logo-icon">🎰</span>
+        <span class="logo-text">The Sellent Drop</span>
+      </div>
+
+      <nav class="nav">
+        <a routerLink="/gacha" routerLinkActive="active">
+          <span class="nav-icon">🎲</span>
+          <span>Gacha</span>
+        </a>
+        <a routerLink="/inventory" routerLinkActive="active">
+          <span class="nav-icon">🎒</span>
+          <span>Inventário</span>
+        </a>
+        <a routerLink="/achievements" routerLinkActive="active">
+          <span class="nav-icon">🏆</span>
+          <span>Conquistas</span>
+        </a>
+        <a *ngIf="isAdmin(user)" routerLink="/admin" routerLinkActive="active">
+          <span class="nav-icon">⚙️</span>
+          <span>Admin</span>
+        </a>
+      </nav>
+
+      <div class="user-info">
+        <div class="coins">
+          <span class="coin-icon">💰</span>
+          <span class="coin-amount">{{ user.coins }}</span>
+        </div>
+        <div class="user-profile">
+          <span class="user-name">{{ user.displayName }}</span>
+          <button class="btn-logout" (click)="logout()">
+            <span>Sair</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
