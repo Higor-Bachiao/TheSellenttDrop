@@ -31,9 +31,13 @@
           <span class="coin-amount">{{ user.coins }}</span>
         </div>
         <div class="user-profile">
-          <span class="user-name">{{ user.displayName }}</span>
+          <div class="welcome-text">
+            <span class="greeting">Bem-vindo,</span>
+            <span class="user-name">{{ user.displayName || user.email?.split('@')[0] }}</span>
+          </div>
           <button class="btn-logout" (click)="logout()">
-            <span>Sair TTTTT</span>
+            <i class="bi bi-box-arrow-right"></i>
+            <span>Sair</span>
           </button>
         </div>
       </div>

@@ -51,9 +51,13 @@
         <span>{{ user.coins || 0 }}</span>
       </div>
       <div class="user-info">
-        <span class="user-name">{{ user.displayName || user.email }}</span>
+        <div class="user-welcome">
+          <span class="greeting">Bem-vindo,</span>
+          <span class="user-name">{{ user.displayName || (user.email ? user.email.split('@')[0] : 'Usuário') }}</span>
+        </div>
         <button class="logout-btn" (click)="logout()">
           <i class="bi bi-box-arrow-right"></i>
+          <span class="logout-text">Sair</span>
         </button>
       </div>
     </div>
