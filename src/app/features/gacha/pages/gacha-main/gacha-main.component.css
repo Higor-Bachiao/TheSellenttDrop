@@ -202,12 +202,12 @@
   padding: 1.5rem;
   z-index: 1;
   filter: drop-shadow(0 4px 20px rgba(249, 115, 22, 0.3));
-  transition: all 0.4s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .box-card:hover .box-image img {
-  transform: scale(1.1) rotate(2deg);
-  filter: drop-shadow(0 8px 30px rgba(249, 115, 22, 0.6));
+  transform: scale(1.08) translateY(-8px);
+  filter: drop-shadow(0 12px 35px rgba(249, 115, 22, 0.7));
 }
 
 .box-info {
@@ -373,7 +373,7 @@
 }
 
 .box-overlay i {
-  font-size: 4rem;
+  font-size: 2.5rem;
   animation: bounce 1s ease-in-out infinite;
   filter: drop-shadow(0 4px 15px rgba(255, 255, 255, 0.5));
 }

@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { Auth } from '@angular/fire/auth';
-import { environment } from '../../../../../environments/environment';
 import { ItemCardComponent } from '../../../../shared/components/item-card/item-card.component';
 import { UserItem, Item, ItemRarity } from '../../../../../../shared/types';
+import { ItemService } from '../../../../core/services/item.service';
 
 interface InventoryItem {
   item: Item;
@@ -29,7 +28,7 @@ export class InventoryMainComponent implements OnInit {
   sortBy: 'rarity' | 'date' | 'quantity' = 'rarity';
 
   constructor(
-    private http: HttpClient,
+    private itemService: ItemService,
     private auth: Auth
   ) {}
 
@@ -44,44 +43,123 @@ export class InventoryMainComponent implements OnInit {
       return;
     }
 
+    // Primeiro, verificar se há cache disponível
+    const cache = this.itemService.getInventoryCache();
+    cache.subscribe(cachedItems => {
+      if (cachedItems) {
+        // Mostrar dados do cache imediatamente
+        this.items = cachedItems;
+        this.sortItems();
+        this.loading = false;
+      }
+    });
+
     this.loading = true;
     this.error = null;
-    this.http.get<any>(`${environment.apiUrl}/users/${currentUser.uid}/items`).subscribe({
+    
+    // Buscar dados atualizados do servidor
+    this.itemService.getUserInventory(currentUser.uid).subscribe({
       next: (response) => {
         this.items = response.data || [];
         this.sortItems();
         this.loading = false;
       },
       error: (err) => {
-        this.error = 'Erro ao carregar inventário';
+        // Se houver cache, não mostrar erro
+        if (!this.items.length) {
+          this.error = 'Erro ao carregar inventário';
+        }
         this.loading = false;
         console.error('Erro ao carregar inventário:', err);
       }
     });
   }
 
+  getRarityOrder(rarity: number): number {
+    // Ordem: Quantum (1000+) > Lendário (800-999) > Épico (600-799) > Raro (400-599) > Comum (0-399)
+    if (rarity >= 1000) return 5; // Quantum
+    if (rarity >= 800) return 4;  // Lendário
+    if (rarity >= 600) return 3;  // Épico
+    if (rarity >= 400) return 2;  // Raro
+    return 1;                      // Comum
+  }
+
   sortItems() {
     this.sortedItems = [...this.items];
     
+    console.log('🔄 Ordenando por:', this.sortBy);
+    console.log('📦 Itens antes:', this.sortedItems.length);
+    
     switch (this.sortBy) {
       case 'rarity':
-        this.sortedItems.sort((a, b) => b.rarity - a.rarity);
+        this.sortedItems.sort((a, b) => {
+          const rarityA = Number(a.rarity) || 0;
+          const rarityB = Number(b.rarity) || 0;
+          const orderA = this.getRarityOrder(rarityA);
+          const orderB = this.getRarityOrder(rarityB);
+          
+          // Se forem da mesma categoria, ordenar pelo número exato
+          if (orderA === orderB) {
+            return rarityB - rarityA;
+          }
+          
+          // Caso contrário, ordenar pela categoria (maior primeiro)
+          return orderB - orderA;
+        });
+        console.log('✅ Ordenado por raridade:', this.sortedItems.map(i => `${i.item.name}: ${i.rarity} (ordem: ${this.getRarityOrder(i.rarity)})`));
         break;
       case 'date':
         this.sortedItems.sort((a, b) => {
-          const dateA = a.obtainedAt?.toDate?.() || new Date(0);
-          const dateB = b.obtainedAt?.toDate?.() || new Date(0);
-          return dateB.getTime() - dateA.getTime();
+          const getTimestamp = (obtainedAt: any): number => {
+            if (!obtainedAt) return 0;
+            
+            // Firestore Timestamp com método toDate()
+            if (typeof obtainedAt.toDate === 'function') {
+              return obtainedAt.toDate().getTime();
+            }
+            
+            // Date object
+            if (obtainedAt instanceof Date) {
+              return obtainedAt.getTime();
+            }
+            
+            // Formato Firestore serializado: {_seconds, _nanoseconds}
+            if (typeof obtainedAt._seconds === 'number') {
+              return obtainedAt._seconds * 1000 + Math.floor((obtainedAt._nanoseconds || 0) / 1000000);
+            }
+            
+            // Formato alternativo: {seconds, nanoseconds}
+            if (typeof obtainedAt.seconds === 'number') {
+              return obtainedAt.seconds * 1000 + Math.floor((obtainedAt.nanoseconds || 0) / 1000000);
+            }
+            
+            // Tentar converter string ou número
+            const timestamp = new Date(obtainedAt).getTime();
+            return isNaN(timestamp) ? 0 : timestamp;
+          };
+          
+          const timestampA = getTimestamp(a.obtainedAt);
+          const timestampB = getTimestamp(b.obtainedAt);
+          
+          return timestampB - timestampA; // Mais recente primeiro
         });
+        console.log('✅ Ordenado por data');
         break;
       case 'quantity':
-        this.sortedItems.sort((a, b) => b.quantity - a.quantity);
+        this.sortedItems.sort((a, b) => {
+          const qtyA = Number(a.quantity) || 0;
+          const qtyB = Number(b.quantity) || 0;
+          return qtyB - qtyA;
+        });
+        console.log('✅ Ordenado por quantidade:', this.sortedItems.map(i => `${i.item.name}: ${i.quantity}`));
         break;
     }
   }
 
-  onSortChange(event: any) {
-    this.sortBy = event.target.value;
+  onSortChange(event: Event) {
+    const target = event.target as HTMLSelectElement;
+    this.sortBy = target.value as 'rarity' | 'date' | 'quantity';
+    console.log('📝 Filtro alterado para:', this.sortBy);
     this.sortItems();
   }
 

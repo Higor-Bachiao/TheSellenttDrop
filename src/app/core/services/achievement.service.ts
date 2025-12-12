@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 
@@ -27,16 +27,31 @@ export class AchievementService {
   private http = inject(HttpClient);
   private achievementsSubject = new BehaviorSubject<AchievementWithProgress[]>([]);
   public achievements$ = this.achievementsSubject.asObservable();
+  private lastFetch = 0;
+  private cacheDuration = 30000; // 30 segundos de cache
 
   // Obter todas as conquistas com progresso do usuário
-  getUserAchievements(userId: string): Observable<any> {
+  getUserAchievements(userId: string, forceRefresh = false): Observable<any> {
+    const now = Date.now();
+    
+    // Se não forçar refresh e tiver cache válido, retorna do cache
+    if (!forceRefresh && this.achievementsSubject.value.length > 0 && (now - this.lastFetch) < this.cacheDuration) {
+      return of({ success: true, data: this.achievementsSubject.value });
+    }
+
     return this.http.get<any>(`${environment.apiUrl}/users/${userId}/achievements`).pipe(
       tap(response => {
         if (response.data) {
           this.achievementsSubject.next(response.data);
+          this.lastFetch = now;
         }
       })
     );
+  }
+
+  // Invalidar cache
+  invalidateCache(): void {
+    this.lastFetch = 0;
   }
 
   // Reivindicar recompensa de uma conquista

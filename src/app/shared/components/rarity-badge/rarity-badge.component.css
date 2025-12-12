@@ -81,20 +81,15 @@
   );
   background-size: 400% 400%;
   color: white;
-  border: 2px solid transparent;
-  border-image: linear-gradient(
-    45deg,
-    #ff0080,
-    #40e0d0,
-    #7928ca,
-    #00ff88
-  ) 1;
+  border: 2px solid #ff0080;
   box-shadow: 
     0 0 20px rgba(255, 0, 128, 0.6),
     0 0 40px rgba(64, 224, 208, 0.4),
     0 0 60px rgba(121, 40, 202, 0.3);
   font-weight: 900;
   letter-spacing: 1px;
+  font-size: 0.75rem;
+  padding: 0.4em 0.9em;
   position: relative;
   overflow: hidden;
   animation: quantum-chaos 4s ease-in-out infinite,

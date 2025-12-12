@@ -2,8 +2,39 @@
   <!-- Gacha Box -->
   <div class="gacha-box" *ngIf="currentBox">
     <div class="box-header">
-      <h1 class="box-title">{{ currentBox.name }}</h1>
-      <p class="box-description">{{ currentBox.description }}</p>
+      <div class="header-glow"></div>
+      <div class="header-content">
+        <div class="title-wrapper">
+          <div class="title-decoration left">
+            <i class="bi bi-stars"></i>
+            <i class="bi bi-stars"></i>
+          </div>
+          <h1 class="box-title">
+            <span class="title-sparkle">✨</span>
+            {{ currentBox.name }}
+            <span class="title-sparkle">✨</span>
+          </h1>
+          <div class="title-decoration right">
+            <i class="bi bi-stars"></i>
+            <i class="bi bi-stars"></i>
+          </div>
+        </div>
+        <div class="title-underline"></div>
+        <p class="box-description">
+          <i class="bi bi-box-seam"></i>
+          {{ currentBox.description }}
+        </p>
+        <div class="header-stats">
+          <div class="stat-badge">
+            <i class="bi bi-collection"></i>
+            <span>{{ currentBox.items?.length || 0 }} Itens</span>
+          </div>
+          <div class="stat-badge cost-badge">
+            <i class="bi bi-coin"></i>
+            <span>{{ currentBox.cost }} por giro</span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Items Grid -->

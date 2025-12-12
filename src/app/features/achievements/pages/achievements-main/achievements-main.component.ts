@@ -98,6 +98,9 @@ export class AchievementsMainComponent implements OnInit {
       next: (response) => {
         const reward = response.data?.reward || 0;
         this.toastService.show(`Recompensa reivindicada! +${reward} moedas`, 'success');
+        
+        // Invalidar cache antes de recarregar
+        this.achievementService.invalidateCache();
         this.loadAchievements();
       },
       error: (err) => {

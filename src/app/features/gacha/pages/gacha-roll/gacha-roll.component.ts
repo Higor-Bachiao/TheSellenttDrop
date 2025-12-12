@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GachaService } from '../../../../core/services/gacha.service';
 import { AuthService } from '../../../../core/services/auth.service';
 import { ToastService } from '../../../../core/services/toast.service';
+import { ItemService } from '../../../../core/services/item.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 import { Observable } from 'rxjs';
@@ -29,6 +30,7 @@ export class GachaRollComponent implements OnInit {
   private gachaService = inject(GachaService);
   private authService = inject(AuthService);
   private toastService = inject(ToastService);
+  private itemService = inject(ItemService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private http = inject(HttpClient);
@@ -202,7 +204,8 @@ export class GachaRollComponent implements OnInit {
               const itemCenterY = itemTopY + (itemVisualHeight / 2);
               
               // Posição final: mover o container para que o centro do item fique no centro da janela
-              const finalPosition = windowCenterY - itemCenterY;
+              // Ajuste fino: -5px para fazer o item descer só um pouquinho
+              const finalPosition = windowCenterY - itemCenterY - 5;
               
               console.log('🎯 Cálculos de Alinhamento:');
               console.log('  - Item ganho: índice', wonItemIndex, 'de', this.boxItems.length);
@@ -228,6 +231,9 @@ export class GachaRollComponent implements OnInit {
                 this.showResult = true;
                 this.isRolling = false;
                 this.toastService.success(response.message || 'Item obtido!');
+                
+                // Invalidar cache do inventário para forçar refresh
+                this.itemService.invalidateCache();
                 
                 // Recarregar dados do usuário para atualizar moedas
                 this.authService.loadCurrentUser().subscribe();
