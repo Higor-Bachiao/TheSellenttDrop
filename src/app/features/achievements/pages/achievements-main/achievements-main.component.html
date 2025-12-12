@@ -1,1 +1,163 @@
-<p>achievements-main works!</p>
+<div class="achievements-page">
+  <!-- Header -->
+  <div class="page-header">
+    <h1>
+      <i class="bi bi-trophy-fill"></i>
+      Conquistas
+    </h1>
+    <p class="subtitle">Desbloqueie conquistas e ganhe recompensas!</p>
+  </div>
+
+  <!-- Painel de Estatísticas -->
+  <div class="stats-panel">
+    <div class="stat-card">
+      <i class="bi bi-trophy"></i>
+      <div class="stat-info">
+        <span class="stat-value">{{ completedCount }} / {{ totalAchievements }}</span>
+        <span class="stat-label">Conquistas</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <i class="bi bi-percent"></i>
+      <div class="stat-info">
+        <span class="stat-value">{{ completionRate }}%</span>
+        <span class="stat-label">Completado</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <i class="bi bi-coin"></i>
+      <div class="stat-info">
+        <span class="stat-value">{{ totalCoinsEarned }}</span>
+        <span class="stat-label">Moedas Ganhas</span>
+      </div>
+    </div>
+
+    <div class="stat-card check-btn-card">
+      <button class="check-btn" (click)="checkForNewAchievements()">
+        <i class="bi bi-arrow-repeat"></i>
+        Verificar
+      </button>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="filters">
+    <button 
+      class="filter-btn" 
+      [class.active]="currentFilter === 'all'"
+      (click)="applyFilter('all')">
+      <i class="bi bi-grid-3x3"></i>
+      Todas ({{ achievements.length }})
+    </button>
+
+    <button 
+      class="filter-btn" 
+      [class.active]="currentFilter === 'completed'"
+      (click)="applyFilter('completed')">
+      <i class="bi bi-check-circle-fill"></i>
+      Completadas ({{ completedCount }})
+    </button>
+
+    <button 
+      class="filter-btn" 
+      [class.active]="currentFilter === 'in-progress'"
+      (click)="applyFilter('in-progress')">
+      <i class="bi bi-hourglass-split"></i>
+      Em Progresso
+    </button>
+
+    <button 
+      class="filter-btn" 
+      [class.active]="currentFilter === 'locked'"
+      (click)="applyFilter('locked')">
+      <i class="bi bi-lock-fill"></i>
+      Bloqueadas
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loadingAchievements" class="loading-container">
+    <div class="spinner"></div>
+    <p>Carregando conquistas...</p>
+  </div>
+
+  <!-- Vazio -->
+  <div *ngIf="!loadingAchievements && achievements.length === 0" class="empty-state">
+    <i class="bi bi-trophy"></i>
+    <h3>Nenhuma conquista encontrada</h3>
+    <p>Continue jogando para desbloquear conquistas!</p>
+  </div>
+
+  <!-- Grid de Conquistas -->
+  <div *ngIf="!loadingAchievements && filteredAchievements.length > 0" class="achievements-grid">
+    <div 
+      *ngFor="let achievement of filteredAchievements" 
+      class="achievement-card"
+      [class.completed]="achievement.completed"
+      [class.locked]="!achievement.completed && achievement.progress === 0"
+      [ngClass]="getTierClass(achievement.tier)">
+      
+      <!-- Badge do Tier -->
+      <div class="tier-badge">{{ getTierEmoji(achievement.tier) }}</div>
+      
+      <!-- Badge Secreta -->
+      <div *ngIf="achievement.secret" class="secret-badge">🔒 Secreta</div>
+      
+      <!-- Ícone -->
+      <div class="achievement-icon">
+        <span class="icon-emoji">{{ achievement.icon || '🏆' }}</span>
+      </div>
+      
+      <!-- Conteúdo -->
+      <div class="achievement-content">
+        <h3 class="achievement-name">{{ achievement.name }}</h3>
+        <p class="achievement-description">{{ achievement.description }}</p>
+        
+        <!-- Barra de Progresso -->
+        <div *ngIf="!achievement.completed" class="progress-container">
+          <div class="progress-bar">
+            <div 
+              class="progress-fill" 
+              [style.width.%]="getProgress(achievement)">
+            </div>
+          </div>
+          <span class="progress-text">{{ getProgressText(achievement) }}</span>
+        </div>
+        
+        <!-- Completada -->
+        <div *ngIf="achievement.completed" class="completed-badge">
+          <i class="bi bi-check-circle-fill"></i>
+          <span>Completada!</span>
+        </div>
+      </div>
+      
+      <!-- Recompensa -->
+      <div class="reward-section">
+        <div class="reward-amount">
+          <i class="bi bi-coin"></i>
+          <span>{{ achievement.reward }}</span>
+        </div>
+        
+        <button 
+          *ngIf="canClaimReward(achievement)" 
+          class="claim-btn"
+          (click)="onClaimReward(achievement.id)">
+          Resgatar
+        </button>
+        
+        <span *ngIf="achievement.claimed" class="claimed-badge">
+          ✓ Resgatada
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sem Resultados -->
+  <div *ngIf="!loadingAchievements && achievements.length > 0 && filteredAchievements.length === 0" class="no-results">
+    <i class="bi bi-filter-circle"></i>
+    <h3>Nenhuma conquista nesta categoria</h3>
+    <p>Experimente outro filtro!</p>
+  </div>
+</div>

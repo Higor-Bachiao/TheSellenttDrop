@@ -13,11 +13,17 @@ interface User {
 }
 
 interface UserItem {
+  id: string;
   item: {
     id: string;
     name: string;
+    description?: string;
     imageUrl: string;
     rarity: string;
+    dropRate?: number;
+    boxId?: string;
+    createdAt?: any;
+    updatedAt?: any;
   };
   rarity: number;
   quantity: number;
@@ -38,6 +44,7 @@ export class UserManagementComponent implements OnInit {
   selectedUser: User | null = null;
   userItems: UserItem[] = [];
   showItemsModal = false;
+  loadingItems = false;
 
   constructor(private http: HttpClient) {}
 
@@ -79,13 +86,21 @@ export class UserManagementComponent implements OnInit {
   viewUserItems(user: User) {
     this.selectedUser = user;
     this.showItemsModal = true;
-    this.http.get<{ items: UserItem[] }>(`${environment.apiUrl}/users/${user.uid}/items`).subscribe({
+    this.userItems = [];
+    this.loadingItems = true;
+    
+    this.http.get<any>(`${environment.apiUrl}/users/${user.uid}/items`).subscribe({
       next: (response) => {
-        this.userItems = response.items;
+        console.log('Response da API de itens:', response);
+        // A API retorna { success: true, data: [...] }
+        this.userItems = response.data || [];
+        this.loadingItems = false;
       },
       error: (err) => {
-        alert('Erro ao carregar itens do usuário');
-        console.error(err);
+        console.error('Erro ao carregar itens:', err);
+        alert('Erro ao carregar itens do usuário: ' + (err.error?.error || err.message));
+        this.userItems = [];
+        this.loadingItems = false;
       }
     });
   }

@@ -68,12 +68,94 @@
   transform: translateX(100%);
 }
 
-/* Rarity Colors */
-.item-card.rarity-comum { border-color: #9ca3af; }
-.item-card.rarity-incomum { border-color: #60a5fa; }
-.item-card.rarity-raro { border-color: #a78bfa; }
-.item-card.rarity-epico { border-color: #f59e0b; }
-.item-card.rarity-lendario { border-color: #ef4444; }
+/* Rarity Colors - Bordas e Efeitos */
+.item-card.rarity-comum { 
+  border-color: #3b82f6;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+}
+
+.item-card.rarity-comum:hover { 
+  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.5);
+}
+
+.item-card.rarity-raro { 
+  border-color: #f97316;
+  box-shadow: 0 0 20px rgba(249, 115, 22, 0.3);
+}
+
+.item-card.rarity-raro:hover { 
+  box-shadow: 0 10px 30px rgba(249, 115, 22, 0.5);
+}
+
+.item-card.rarity-epico { 
+  border-color: #a855f7;
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+  animation: epic-pulse 2s ease-in-out infinite;
+}
+
+.item-card.rarity-epico:hover { 
+  box-shadow: 0 10px 35px rgba(168, 85, 247, 0.6);
+}
+
+.item-card.rarity-lendario { 
+  border-color: #fbbf24;
+  box-shadow: 0 0 25px rgba(251, 191, 36, 0.4);
+  animation: legendary-glow 3s ease-in-out infinite;
+}
+
+.item-card.rarity-lendario:hover { 
+  box-shadow: 0 10px 40px rgba(251, 191, 36, 0.7);
+}
+
+.item-card.rarity-quantum { 
+  border: 3px solid;
+  border-image: linear-gradient(
+    45deg,
+    #ff0080,
+    #40e0d0,
+    #7928ca,
+    #00ff88,
+    #ff0080
+  ) 1;
+  box-shadow: 
+    0 0 20px rgba(255, 0, 128, 0.4),
+    0 0 40px rgba(64, 224, 208, 0.3);
+  animation: quantum-border 4s linear infinite;
+}
+
+.item-card.rarity-quantum:hover { 
+  box-shadow: 
+    0 0 30px rgba(255, 0, 128, 0.6),
+    0 10px 50px rgba(64, 224, 208, 0.5);
+}
+
+/* Animações de Raridade */
+@keyframes epic-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(168, 85, 247, 0.6);
+  }
+}
+
+@keyframes legendary-glow {
+  0%, 100% {
+    box-shadow: 0 0 25px rgba(251, 191, 36, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(251, 191, 36, 0.7);
+  }
+}
+
+@keyframes quantum-border {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
 
 .item-image-wrapper {
   width: 100%;
@@ -117,21 +199,24 @@
 
 /* Slot Machine Animation */
 .slot-machine {
-  max-width: 600px;
-  margin: 3rem auto;
+  max-width: 900px;
+  width: 90%;
+  margin: 2rem auto;
   position: relative;
 }
 
 .slot-window {
-  background: rgba(0, 0, 0, 0.8);
-  border: 4px solid #f97316;
-  border-radius: 20px;
-  height: 300px;
+  background: rgba(0, 0, 0, 0.9);
+  border: 5px solid #f97316;
+  border-radius: 25px;
+  height: 70vh;
+  min-height: 500px;
+  max-height: 800px;
   overflow: hidden;
   position: relative;
   box-shadow: 
-    0 0 30px rgba(249, 115, 22, 0.5),
-    inset 0 0 20px rgba(0, 0, 0, 0.5);
+    0 0 40px rgba(249, 115, 22, 0.6),
+    inset 0 0 30px rgba(0, 0, 0, 0.7);
 }
 
 .slot-container {
@@ -155,13 +240,13 @@
 
 .slot-item {
   background: rgba(255, 255, 255, 0.05);
-  border: 2px solid rgba(249, 115, 22, 0.3);
-  border-radius: 15px;
-  padding: 15px;
+  border: 3px solid rgba(249, 115, 22, 0.4);
+  border-radius: 20px;
+  padding: 20px;
   display: flex;
   align-items: center;
-  gap: 15px;
-  min-height: 80px;
+  gap: 20px;
+  min-height: 120px;
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
   position: relative;
@@ -195,14 +280,15 @@
 }
 
 .slot-item-image {
-  width: 60px;
-  height: 60px;
+  width: 90px;
+  height: 90px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 15px;
+  border: 2px solid rgba(249, 115, 22, 0.2);
 }
 
 .slot-item-image img {
@@ -213,35 +299,50 @@
 
 .slot-item-name {
   flex: 1;
-  font-size: 1.1rem;
+  font-size: 1.4rem;
   font-weight: bold;
   color: #fff;
   text-align: left;
 }
 
 .slot-item-rarity {
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 1.1rem;
+  font-weight: 700;
   text-transform: uppercase;
-  padding: 4px 12px;
-  border-radius: 20px;
-  background: rgba(0, 0, 0, 0.3);
+  padding: 6px 16px;
+  border-radius: 25px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 2px solid currentColor;
 }
 
 .slot-indicator {
   position: absolute;
   top: 50%;
-  left: 0;
-  right: 0;
-  height: 100px;
+  left: 20px;
+  right: 20px;
+  height: 150px;
   transform: translateY(-50%);
-  border: 3px solid #ffd700;
-  border-radius: 15px;
+  border: 4px solid #ffd700;
+  border-radius: 20px;
   box-shadow: 
-    0 0 20px rgba(255, 215, 0, 0.6),
-    inset 0 0 20px rgba(255, 215, 0, 0.3);
+    0 0 30px rgba(255, 215, 0, 0.8),
+    inset 0 0 30px rgba(255, 215, 0, 0.4);
   pointer-events: none;
   z-index: 10;
+  animation: indicatorPulse 2s ease-in-out infinite;
+}
+
+@keyframes indicatorPulse {
+  0%, 100% {
+    box-shadow: 
+      0 0 30px rgba(255, 215, 0, 0.8),
+      inset 0 0 30px rgba(255, 215, 0, 0.4);
+  }
+  50% {
+    box-shadow: 
+      0 0 50px rgba(255, 215, 0, 1),
+      inset 0 0 50px rgba(255, 215, 0, 0.6);
+  }
 }
 
 .slot-indicator::before,
@@ -254,19 +355,21 @@
 }
 
 .slot-indicator::before {
-  left: -20px;
+  left: -30px;
   top: 50%;
   transform: translateY(-50%);
-  border-width: 15px 20px 15px 0;
+  border-width: 20px 30px 20px 0;
   border-color: transparent #ffd700 transparent transparent;
+  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
 }
 
 .slot-indicator::after {
-  right: -20px;
+  right: -30px;
   top: 50%;
   transform: translateY(-50%);
-  border-width: 15px 0 15px 20px;
+  border-width: 20px 0 20px 30px;
   border-color: transparent transparent transparent #ffd700;
+  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
 }
 
 /* Roll Section */
@@ -453,11 +556,81 @@
   50% { box-shadow: 0 0 40px currentColor; }
 }
 
-.result-item.rarity-comum { border-color: #9ca3af; color: #9ca3af; }
-.result-item.rarity-incomum { border-color: #60a5fa; color: #60a5fa; }
-.result-item.rarity-raro { border-color: #a78bfa; color: #a78bfa; }
-.result-item.rarity-epico { border-color: #f59e0b; color: #f59e0b; }
-.result-item.rarity-lendario { border-color: #ef4444; color: #ef4444; }
+.result-item.rarity-comum { 
+  border-color: #3b82f6; 
+  color: #3b82f6;
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
+}
+
+.result-item.rarity-raro { 
+  border-color: #f97316; 
+  color: #f97316;
+  box-shadow: 0 0 30px rgba(249, 115, 22, 0.5);
+}
+
+.result-item.rarity-epico { 
+  border-color: #a855f7; 
+  color: #a855f7;
+  box-shadow: 0 0 35px rgba(168, 85, 247, 0.6);
+  animation: epic-result 2s ease-in-out infinite;
+}
+
+.result-item.rarity-lendario { 
+  border-color: #fbbf24; 
+  color: #fbbf24;
+  box-shadow: 0 0 40px rgba(251, 191, 36, 0.7);
+  animation: legendary-result 3s ease-in-out infinite;
+}
+
+.result-item.rarity-quantum { 
+  border: 4px solid;
+  border-image: linear-gradient(
+    45deg,
+    #ff0080,
+    #40e0d0,
+    #7928ca,
+    #00ff88,
+    #ff0080
+  ) 1;
+  color: #ff0080;
+  box-shadow: 
+    0 0 40px rgba(255, 0, 128, 0.6),
+    0 0 60px rgba(64, 224, 208, 0.5);
+  animation: quantum-result 3s linear infinite;
+}
+
+@keyframes epic-result {
+  0%, 100% {
+    box-shadow: 0 0 35px rgba(168, 85, 247, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 50px rgba(168, 85, 247, 0.9);
+  }
+}
+
+@keyframes legendary-result {
+  0%, 100% {
+    box-shadow: 0 0 40px rgba(251, 191, 36, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 60px rgba(251, 191, 36, 1);
+  }
+}
+
+@keyframes quantum-result {
+  0% {
+    filter: hue-rotate(0deg);
+    box-shadow: 
+      0 0 40px rgba(255, 0, 128, 0.6),
+      0 0 60px rgba(64, 224, 208, 0.5);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+    box-shadow: 
+      0 0 40px rgba(255, 0, 128, 0.6),
+      0 0 60px rgba(64, 224, 208, 0.5);
+  }
+}
 
 .result-glow {
   position: absolute;

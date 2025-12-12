@@ -114,6 +114,16 @@ export class GachaRollComponent implements OnInit {
     const targetRepetition = 5;
     const winningIndex = targetRepetition * this.boxItems.length + wonItemIndex;
     
+    if (index === winningIndex) {
+      console.log('✨ Item vencedor destacado:', {
+        index,
+        itemId: this.boxItems[wonItemIndex % this.boxItems.length]?.id,
+        itemName: this.boxItems[wonItemIndex % this.boxItems.length]?.name,
+        resultId: this.result?.item.id,
+        resultName: this.result?.item.name
+      });
+    }
+    
     return index === winningIndex;
   }
 
@@ -139,66 +149,90 @@ export class GachaRollComponent implements OnInit {
           console.log('📍 Índice do item na lista:', wonItemIndex);
           
           if (wonItemIndex !== -1) {
-            // Calcular posição final: item deve ficar no centro (posição do indicador)
-            // Altura por item: min-height(80) + padding(30) + border(4) + gap(10) = 124px
-            // Mas visualmente, o gap de 10px é o espaçamento, então consideramos 114px + 10px gap
-            const itemHeight = 124; // Altura total incluindo gap
-            
-            // A janela tem 300px de altura
-            // O indicador está centralizado, começando em 100px e indo até 200px (100px de altura)
-            // O centro do indicador está em 150px do topo da janela
-            const windowHeight = 300;
-            const indicatorCenter = windowHeight / 2; // 150px
-            
-            // Padding do container no topo
-            const containerPadding = 20;
-            
-            // Posição no meio da lista repetida (5ª repetição de 10 total)
-            const targetRepetition = 5;
-            const absoluteItemIndex = targetRepetition * this.boxItems.length + wonItemIndex;
-            
-            // Posição do topo do item no container (considerando padding inicial)
-            const itemTopPosition = containerPadding + (absoluteItemIndex * itemHeight);
-            
-            // Centro do item (metade da altura efetiva do item visual)
-            const itemVisualHeight = 80 + 30; // min-height + padding
-            const itemCenterOffset = itemVisualHeight / 2;
-            
-            // Posição do centro do item
-            const itemCenterPosition = itemTopPosition + itemCenterOffset;
-            
-            // Para centralizar: queremos que itemCenterPosition fique em indicatorCenter
-            // transform: translateY(finalPosition) move o container
-            // finalPosition negativo move para cima
-            const finalPosition = indicatorCenter - itemCenterPosition;
-            
-            console.log('🎯 Cálculos:');
-            console.log('  - Índice do item:', wonItemIndex);
-            console.log('  - Índice absoluto na lista:', absoluteItemIndex);
-            console.log('  - Posição do topo do item:', itemTopPosition, 'px');
-            console.log('  - Posição do centro do item:', itemCenterPosition, 'px');
-            console.log('  - Centro do indicador:', indicatorCenter, 'px');
-            console.log('  - Posição final (translateY):', finalPosition, 'px');
-            
-            // Fase 1: Giro rápido (1.5s)
-            this.animateFastSpin(finalPosition);
-            
-            // Fase 2: Desaceleração (1.5s)
+            // Aguardar um pouco para garantir que o DOM está renderizado
             setTimeout(() => {
-              this.animationPhase = 'slow';
-              this.animateSlowdown(finalPosition);
-            }, 1500);
-            
-            // Fase 3: Mostrar resultado (após 3s total)
-            setTimeout(() => {
-              this.animationPhase = 'stop';
-              this.showResult = true;
-              this.isRolling = false;
-              this.toastService.success(response.message || 'Item obtido!');
+              // Medir dimensões reais do DOM
+              const slotItems = document.querySelector('.slot-items');
+              const firstItem = document.querySelector('.slot-item');
+              const slotWindow = document.querySelector('.slot-window');
               
-              // Recarregar dados do usuário para atualizar moedas
-              this.authService.loadCurrentUser().subscribe();
-            }, 3000);
+              let itemHeight = 176; // Valor padrão
+              let itemVisualHeight = 166; // Altura sem gap
+              let containerPadding = 20;
+              let windowCenterY = 300;
+              let gapSize = 10;
+              
+              if (firstItem && slotItems) {
+                // Altura real do item
+                const itemRect = firstItem.getBoundingClientRect();
+                itemVisualHeight = itemRect.height;
+                
+                // Gap do flexbox
+                const containerStyle = window.getComputedStyle(slotItems);
+                gapSize = parseFloat(containerStyle.gap) || 10;
+                
+                // Altura total = altura do item + gap
+                itemHeight = itemVisualHeight + gapSize;
+                
+                // Padding do container
+                const paddingTop = parseFloat(containerStyle.paddingTop) || 20;
+                containerPadding = paddingTop;
+                
+                console.log('📏 Medições Reais do DOM:');
+                console.log('  - Altura visual do item:', itemVisualHeight.toFixed(2), 'px');
+                console.log('  - Gap do flex:', gapSize, 'px');
+                console.log('  - Total por item:', itemHeight.toFixed(2), 'px');
+                console.log('  - Padding do container:', containerPadding, 'px');
+              }
+              
+              if (slotWindow) {
+                const windowHeight = slotWindow.getBoundingClientRect().height;
+                windowCenterY = windowHeight / 2;
+                console.log('  - Altura da janela:', windowHeight.toFixed(2), 'px');
+                console.log('  - Centro da janela:', windowCenterY.toFixed(2), 'px');
+              }
+              
+              // Posição no meio da lista repetida (5ª repetição)
+              const targetRepetition = 5;
+              const absoluteItemIndex = targetRepetition * this.boxItems.length + wonItemIndex;
+              
+              // Posição do centro do item sorteado
+              // = padding inicial + (quantidade de itens antes * altura total) + (metade da altura visual do item)
+              const itemTopY = containerPadding + (absoluteItemIndex * itemHeight);
+              const itemCenterY = itemTopY + (itemVisualHeight / 2);
+              
+              // Posição final: mover o container para que o centro do item fique no centro da janela
+              const finalPosition = windowCenterY - itemCenterY;
+              
+              console.log('🎯 Cálculos de Alinhamento:');
+              console.log('  - Item ganho: índice', wonItemIndex, 'de', this.boxItems.length);
+              console.log('  - Nome:', response.data?.item.name);
+              console.log('  - ID:', response.data?.item.id);
+              console.log('  - Índice absoluto:', absoluteItemIndex);
+              console.log('  - Topo do item:', itemTopY.toFixed(2), 'px');
+              console.log('  - Centro do item:', itemCenterY.toFixed(2), 'px');
+              console.log('  - Posição final (translateY):', finalPosition.toFixed(2), 'px');
+              
+              // Fase 1: Giro rápido (2s)
+              this.animateFastSpin(finalPosition);
+              
+              // Fase 2: Desaceleração lenta (3s)
+              setTimeout(() => {
+                this.animationPhase = 'slow';
+                this.animateSlowdown(finalPosition);
+              }, 2000);
+              
+              // Fase 3: Mostrar resultado (após 2s + 3s + 2s de pausa = 7s total)
+              setTimeout(() => {
+                this.animationPhase = 'stop';
+                this.showResult = true;
+                this.isRolling = false;
+                this.toastService.success(response.message || 'Item obtido!');
+                
+                // Recarregar dados do usuário para atualizar moedas
+                this.authService.loadCurrentUser().subscribe();
+              }, 7000);
+            }, 100); // 100ms para garantir renderização
           }
         }
       },
@@ -212,15 +246,15 @@ export class GachaRollComponent implements OnInit {
 
   animateFastSpin(finalPosition: number) {
     const startTime = Date.now();
-    const duration = 1500;
+    const duration = 2000; // 2 segundos de spin rápido
     const startPosition = 0;
-    const intermediatePosition = finalPosition - 1000; // Ir além e depois voltar
+    const intermediatePosition = finalPosition - 1500; // Ir além e depois voltar
 
     const animate = () => {
       const elapsed = Date.now() - startTime;
       const progress = Math.min(elapsed / duration, 1);
       
-      // Easing rápido no início
+      // Easing linear para spin constante e rápido
       const eased = progress;
       this.slotPosition = startPosition + (intermediatePosition - startPosition) * eased;
       
@@ -234,31 +268,25 @@ export class GachaRollComponent implements OnInit {
 
   animateSlowdown(finalPosition: number) {
     const startTime = Date.now();
-    const duration = 1500;
+    const duration = 3000; // 3 segundos de desaceleração - MAIS LENTO
     const startPosition = this.slotPosition;
 
     const animate = () => {
       const elapsed = Date.now() - startTime;
       const progress = Math.min(elapsed / duration, 1);
       
-      // Easing ease-out com bounce no final
-      let eased: number;
-      if (progress < 0.9) {
-        // Desaceleração suave
-        eased = 1 - Math.pow(1 - progress / 0.9, 3);
-      } else {
-        // Mini bounce no final
-        const bounceProgress = (progress - 0.9) / 0.1;
-        const bounce = Math.sin(bounceProgress * Math.PI * 2) * 0.02;
-        eased = 1 + bounce;
-      }
+      // Easing cubic-out: desaceleração suave e gradual, sem bounce
+      // Quanto mais próximo de 1, mais lenta a desaceleração
+      const eased = 1 - Math.pow(1 - progress, 3);
       
       this.slotPosition = startPosition + (finalPosition - startPosition) * eased;
       
       if (progress < 1 && this.animationPhase === 'slow') {
         requestAnimationFrame(animate);
       } else if (progress >= 1) {
+        // Garantir que para exatamente na posição final
         this.slotPosition = finalPosition;
+        console.log('🎯 Parou na posição:', finalPosition, 'px');
       }
     };
     
@@ -276,11 +304,11 @@ export class GachaRollComponent implements OnInit {
 
   getRarityColor(rarity: string): string {
     const colors: any = {
-      'comum': '#9ca3af',
-      'incomum': '#60a5fa',
-      'raro': '#a78bfa',
-      'epico': '#f59e0b',
-      'lendario': '#ef4444'
+      'comum': '#3b82f6',      // Azul
+      'raro': '#f97316',       // Laranja
+      'epico': '#a855f7',      // Roxo
+      'lendario': '#fbbf24',   // Dourado
+      'quantum': '#ff0080'     // Rosa/Multicolor
     };
     return colors[rarity] || '#9ca3af';
   }

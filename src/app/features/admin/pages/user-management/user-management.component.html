@@ -62,11 +62,15 @@
         </button>
       </div>
       <div class="modal-body">
-        <div *ngIf="userItems.length === 0" class="no-items">
+        <div *ngIf="loadingItems" class="loading">
+          <i class="bi bi-arrow-repeat spin"></i>
+          <p>Carregando itens...</p>
+        </div>
+        <div *ngIf="!loadingItems && userItems.length === 0" class="no-items">
           <i class="bi bi-inbox"></i>
           <p>Este usuário ainda não possui itens.</p>
         </div>
-        <div class="items-grid" *ngIf="userItems.length > 0">
+        <div class="items-grid" *ngIf="!loadingItems && userItems.length > 0">
           <div class="item-card" *ngFor="let userItem of userItems">
             <div class="item-image">
               <img [src]="userItem.item.imageUrl" [alt]="userItem.item.name">

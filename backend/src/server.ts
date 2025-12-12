@@ -17,6 +17,7 @@ import itemRoutes from './routes/item.routes';
 import gachaRoutes from './routes/gacha.routes';
 import userRoutes from './routes/user.routes';
 import boxRoutes from './routes/box.routes';
+import achievementRoutes from './routes/achievement.routes';
 
 // Health check
 app.get('/health', (req, res) => {
@@ -29,6 +30,7 @@ app.use('/api/items', itemRoutes);
 app.use('/api/gacha', gachaRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/boxes', boxRoutes);
+app.use('/api', achievementRoutes);
 
 app.listen(PORT, () => {
   console.log(`✅ Server running on port ${PORT}`);
