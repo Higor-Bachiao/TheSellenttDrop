@@ -48,9 +48,20 @@ export class ItemManagementComponent implements OnInit {
     boxId: ''
   };
 
-  rarityOptions = ['comum', 'incomum', 'raro', 'épico', 'lendário'];
+  rarityOptions = ['comum', 'raro', 'epico', 'lendario', 'quantum'];
 
   constructor(private http: HttpClient) {}
+
+  getRarityLabel(rarity: string): string {
+    const labels: any = {
+      'comum': 'Comum',
+      'raro': 'Raro',
+      'epico': 'Épico',
+      'lendario': 'Lendário',
+      'quantum': 'Accidentally Quantum Existence'
+    };
+    return labels[rarity] || rarity;
+  }
 
   ngOnInit() {
     this.loadBoxes();
@@ -183,11 +194,11 @@ export class ItemManagementComponent implements OnInit {
 
   getRarityColor(rarity: string): string {
     const colors: any = {
-      'comum': '#9e9e9e',
-      'incomum': '#4caf50',
-      'raro': '#2196f3',
-      'épico': '#9c27b0',
-      'lendário': '#f44336'
+      'comum': '#3b82f6',      // Azul
+      'raro': '#f97316',       // Laranja
+      'epico': '#a855f7',      // Roxo
+      'lendario': '#fbbf24',   // Amarelo/Dourado
+      'quantum': '#ff0080'     // Rosa/Multicolor
     };
     return colors[rarity] || '#fff';
   }

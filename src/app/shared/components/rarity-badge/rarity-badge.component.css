@@ -1,36 +1,211 @@
-.badge {
+.rarity-badge {
+  display: inline-block;
   font-size: 0.85rem;
-  padding: 0.4em 0.8em;
-  font-weight: 600;
+  padding: 0.5em 1em;
+  font-weight: 700;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
 }
 
-.rarity-common {
-  background-color: #6c757d;
+/* COMUM - Azul */
+.rarity-comum {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
   color: white;
+  border-color: #60a5fa;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
 }
 
-.rarity-rare {
-  background-color: #0d6efd;
+.rarity-comum:hover {
+  box-shadow: 0 0 25px rgba(59, 130, 246, 0.8);
+  transform: scale(1.05);
+}
+
+/* RARO - Laranja */
+.rarity-raro {
+  background: linear-gradient(135deg, #f97316, #ea580c);
   color: white;
+  border-color: #fb923c;
+  box-shadow: 0 0 15px rgba(249, 115, 22, 0.5);
 }
 
-.rarity-epic {
-  background-color: #6f42c1;
+.rarity-raro:hover {
+  box-shadow: 0 0 25px rgba(249, 115, 22, 0.8);
+  transform: scale(1.05);
+}
+
+/* ÉPICO - Roxo */
+.rarity-epico {
+  background: linear-gradient(135deg, #a855f7, #9333ea);
   color: white;
+  border-color: #c084fc;
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+  animation: epic-pulse 2s ease-in-out infinite;
 }
 
-.rarity-legendary {
-  background: linear-gradient(135deg, #ffd700, #ff8c00);
-  color: #000;
-  font-weight: bold;
-  animation: shimmer 2s infinite;
+.rarity-epico:hover {
+  box-shadow: 0 0 30px rgba(168, 85, 247, 0.9);
+  transform: scale(1.05);
 }
 
-@keyframes shimmer {
+/* LENDÁRIO - Amarelo/Dourado */
+.rarity-lendario {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b, #fbbf24);
+  background-size: 200% 200%;
+  color: #78350f;
+  border-color: #fcd34d;
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.7);
+  font-weight: 800;
+  animation: legendary-shine 3s ease-in-out infinite;
+}
+
+.rarity-lendario:hover {
+  box-shadow: 0 0 35px rgba(251, 191, 36, 1);
+  transform: scale(1.05);
+}
+
+/* QUANTUM - Efeito Louco Multicolor */
+.rarity-quantum {
+  background: linear-gradient(
+    45deg,
+    #ff0080,
+    #ff8c00,
+    #40e0d0,
+    #ff0080,
+    #7928ca,
+    #00ff88,
+    #ff0080
+  );
+  background-size: 400% 400%;
+  color: white;
+  border: 2px solid transparent;
+  border-image: linear-gradient(
+    45deg,
+    #ff0080,
+    #40e0d0,
+    #7928ca,
+    #00ff88
+  ) 1;
+  box-shadow: 
+    0 0 20px rgba(255, 0, 128, 0.6),
+    0 0 40px rgba(64, 224, 208, 0.4),
+    0 0 60px rgba(121, 40, 202, 0.3);
+  font-weight: 900;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+  animation: quantum-chaos 4s ease-in-out infinite,
+             quantum-glitch 0.5s steps(2, end) infinite;
+}
+
+.rarity-quantum::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transform: rotate(45deg);
+  animation: quantum-shine 2s linear infinite;
+}
+
+.rarity-quantum:hover {
+  box-shadow: 
+    0 0 30px rgba(255, 0, 128, 1),
+    0 0 60px rgba(64, 224, 208, 0.8),
+    0 0 90px rgba(121, 40, 202, 0.6);
+  transform: scale(1.1) rotate(1deg);
+  animation-duration: 2s, 0.3s;
+}
+
+/* Animações */
+@keyframes epic-pulse {
   0%, 100% {
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
   }
   50% {
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+    box-shadow: 0 0 25px rgba(168, 85, 247, 0.8);
+  }
+}
+
+@keyframes legendary-shine {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes quantum-chaos {
+  0% {
+    background-position: 0% 50%;
+    filter: hue-rotate(0deg);
+  }
+  33% {
+    background-position: 100% 50%;
+    filter: hue-rotate(120deg);
+  }
+  66% {
+    background-position: 50% 100%;
+    filter: hue-rotate(240deg);
+  }
+  100% {
+    background-position: 0% 50%;
+    filter: hue-rotate(360deg);
+  }
+}
+
+@keyframes quantum-shine {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
+@keyframes quantum-glitch {
+  0% {
+    text-shadow: 
+      2px 0 #ff0080,
+      -2px 0 #40e0d0;
+  }
+  50% {
+    text-shadow: 
+      -2px 0 #ff0080,
+      2px 0 #40e0d0;
+  }
+  100% {
+    text-shadow: 
+      2px 0 #ff0080,
+      -2px 0 #40e0d0;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .rarity-badge {
+    font-size: 0.75rem;
+    padding: 0.4em 0.8em;
+  }
+}
+
+@media (max-width: 480px) {
+  .rarity-badge {
+    font-size: 0.7rem;
+    padding: 0.3em 0.6em;
   }
 }

@@ -97,18 +97,18 @@ export class UserManagementComponent implements OnInit {
   }
 
   getRarityColor(rarity: number): string {
-    if (rarity <= 200) return '#9e9e9e'; // comum
-    if (rarity <= 400) return '#4caf50'; // incomum
-    if (rarity <= 600) return '#2196f3'; // raro
-    if (rarity <= 800) return '#9c27b0'; // épico
-    return '#f44336'; // lendário
+    if (rarity <= 250) return '#3b82f6';   // Comum - Azul
+    if (rarity <= 500) return '#f97316';   // Raro - Laranja
+    if (rarity <= 750) return '#a855f7';   // Épico - Roxo
+    if (rarity <= 950) return '#fbbf24';   // Lendário - Dourado
+    return '#ff0080';                       // Quantum - Rosa/Multicolor
   }
 
   getRarityTier(rarity: number): string {
-    if (rarity <= 200) return 'Comum';
-    if (rarity <= 400) return 'Incomum';
-    if (rarity <= 600) return 'Raro';
-    if (rarity <= 800) return 'Épico';
-    return 'Lendário';
+    if (rarity <= 250) return 'Comum';
+    if (rarity <= 500) return 'Raro';
+    if (rarity <= 750) return 'Épico';
+    if (rarity <= 950) return 'Lendário';
+    return 'Quantum';
   }
 }

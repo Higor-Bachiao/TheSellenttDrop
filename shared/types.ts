@@ -25,10 +25,10 @@ export interface User {
 
 export enum ItemRarity {
   COMUM = 'comum',
-  INCOMUM = 'incomum',
   RARO = 'raro',
   EPICO = 'epico',
-  LENDARIO = 'lendario'
+  LENDARIO = 'lendario',
+  QUANTUM = 'quantum'
 }
 
 export interface Item {

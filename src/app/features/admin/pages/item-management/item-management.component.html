@@ -113,7 +113,7 @@
               [style.color]="getRarityColor(formData.rarity)"
             >
               <option *ngFor="let rarity of rarityOptions" [value]="rarity">
-                {{ rarity | titlecase }}
+                {{ getRarityLabel(rarity) }}
               </option>
             </select>
           </div>

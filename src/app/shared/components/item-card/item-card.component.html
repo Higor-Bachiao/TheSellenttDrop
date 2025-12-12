@@ -1,1 +1,20 @@
-<p>item-card works!</p>
+<div class="item-card" [ngClass]="getRarityClass()">
+  <div class="item-image-container">
+    <img [src]="item.imageUrl" [alt]="item.name" class="item-image">
+    <div class="item-overlay">
+      <app-rarity-badge [rarity]="item.rarity"></app-rarity-badge>
+    </div>
+  </div>
+  
+  <div class="item-content">
+    <h3 class="item-name">{{ item.name }}</h3>
+    <p class="item-description">{{ item.description }}</p>
+    
+    <div class="item-footer" *ngIf="quantity">
+      <span class="item-quantity">
+        <i class="bi bi-stack"></i>
+        Quantidade: {{ quantity }}
+      </span>
+    </div>
+  </div>
+</div>

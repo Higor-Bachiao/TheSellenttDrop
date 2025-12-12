@@ -31,36 +31,10 @@
   </div>
 
   <div *ngIf="!loading && !error && sortedItems.length > 0" class="items-grid">
-    <div class="item-card" *ngFor="let inventoryItem of sortedItems" [style.border-color]="getRarityColor(inventoryItem.rarity)">
-      <div class="item-rarity-badge" [style.background]="getRarityColor(inventoryItem.rarity)">
-        <i [class]="'bi ' + getRarityIcon(inventoryItem.rarity)"></i>
-        {{ getRarityTier(inventoryItem.rarity) }}
-      </div>
-      
-      <div class="item-image">
-        <img [src]="inventoryItem.item.imageUrl" [alt]="inventoryItem.item.name">
-      </div>
-      
-      <div class="item-info">
-        <h3>{{ inventoryItem.item.name }}</h3>
-        
-        <div class="item-rarity" [style.color]="getRarityColor(inventoryItem.rarity)">
-          <i class="bi bi-stars"></i>
-          <span class="rarity-value">{{ inventoryItem.rarity }}</span>
-          <span class="rarity-max">/ 1000</span>
-        </div>
-        
-        <div class="item-stats">
-          <div class="stat">
-            <i class="bi bi-stack"></i>
-            <span>{{ inventoryItem.quantity }}x</span>
-          </div>
-          <div class="stat">
-            <i class="bi bi-calendar-check"></i>
-            <span>{{ inventoryItem.obtainedAt?.toDate?.() | date:'dd/MM/yy' || '—' }}</span>
-          </div>
-        </div>
-      </div>
-    </div>
+    <app-item-card 
+      *ngFor="let inventoryItem of sortedItems"
+      [item]="inventoryItem.item"
+      [quantity]="inventoryItem.quantity">
+    </app-item-card>
   </div>
 </div>

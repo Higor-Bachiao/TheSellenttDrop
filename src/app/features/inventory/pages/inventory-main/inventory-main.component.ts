@@ -4,14 +4,11 @@ import { RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Auth } from '@angular/fire/auth';
 import { environment } from '../../../../../environments/environment';
+import { ItemCardComponent } from '../../../../shared/components/item-card/item-card.component';
+import { UserItem, Item, ItemRarity } from '../../../../../../shared/types';
 
 interface InventoryItem {
-  item: {
-    id: string;
-    name: string;
-    imageUrl: string;
-    rarity: string;
-  };
+  item: Item;
   rarity: number;
   quantity: number;
   obtainedAt: any;
@@ -20,7 +17,7 @@ interface InventoryItem {
 @Component({
   selector: 'app-inventory-main',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, ItemCardComponent],
   templateUrl: './inventory-main.component.html',
   styleUrl: './inventory-main.component.css'
 })

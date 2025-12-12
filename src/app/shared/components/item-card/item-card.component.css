@@ -1,24 +1,247 @@
 .item-card {
-  transition: transform 0.2s, box-shadow 0.2s;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
   cursor: pointer;
+  border: 3px solid transparent;
+  backdrop-filter: blur(10px);
+  position: relative;
 }
 
 .item-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transform: translateY(-8px) scale(1.02);
 }
 
-.card-img-top {
-  height: 200px;
+.item-image-container {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4));
+}
+
+.item-image {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+  transition: transform 0.3s ease;
 }
 
-.card-title {
-  font-weight: bold;
+.item-card:hover .item-image {
+  transform: scale(1.1);
+}
+
+.item-overlay {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+}
+
+.item-content {
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.item-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.item-description {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 12px;
+  min-height: 40px;
+  line-height: 1.4;
+}
+
+.item-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.item-quantity {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #fbbf24;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.item-quantity i {
   font-size: 1.1rem;
 }
 
-.card-text {
-  font-size: 0.9rem;
-  min-height: 40px;
+/* Bordas de Raridade */
+.rarity-border-comum {
+  border-color: #3b82f6;
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+}
+
+.rarity-border-comum:hover {
+  box-shadow: 0 8px 30px rgba(59, 130, 246, 0.5);
+}
+
+.rarity-border-raro {
+  border-color: #f97316;
+  box-shadow: 0 4px 20px rgba(249, 115, 22, 0.3);
+}
+
+.rarity-border-raro:hover {
+  box-shadow: 0 8px 30px rgba(249, 115, 22, 0.5);
+}
+
+.rarity-border-epico {
+  border-color: #a855f7;
+  box-shadow: 0 4px 20px rgba(168, 85, 247, 0.3);
+  animation: epic-glow 2s ease-in-out infinite;
+}
+
+.rarity-border-epico:hover {
+  box-shadow: 0 8px 35px rgba(168, 85, 247, 0.6);
+}
+
+.rarity-border-lendario {
+  border-color: #fbbf24;
+  box-shadow: 0 4px 25px rgba(251, 191, 36, 0.4);
+  animation: legendary-glow 3s ease-in-out infinite;
+}
+
+.rarity-border-lendario:hover {
+  box-shadow: 0 8px 40px rgba(251, 191, 36, 0.7);
+}
+
+.rarity-border-quantum {
+  border: 3px solid;
+  border-image: linear-gradient(
+    45deg,
+    #ff0080,
+    #40e0d0,
+    #7928ca,
+    #00ff88,
+    #ff0080
+  ) 1;
+  box-shadow: 
+    0 0 20px rgba(255, 0, 128, 0.4),
+    0 0 40px rgba(64, 224, 208, 0.3),
+    0 0 60px rgba(121, 40, 202, 0.2);
+  animation: quantum-border 4s linear infinite;
+  position: relative;
+}
+
+.rarity-border-quantum::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  background: linear-gradient(
+    45deg,
+    #ff0080,
+    #ff8c00,
+    #40e0d0,
+    #7928ca,
+    #00ff88,
+    #ff0080
+  );
+  background-size: 400% 400%;
+  border-radius: 16px;
+  z-index: -1;
+  animation: quantum-border-animate 4s ease infinite;
+  opacity: 0.6;
+}
+
+.rarity-border-quantum:hover {
+  box-shadow: 
+    0 0 30px rgba(255, 0, 128, 0.6),
+    0 0 60px rgba(64, 224, 208, 0.5),
+    0 0 90px rgba(121, 40, 202, 0.4);
+}
+
+/* Animações */
+@keyframes epic-glow {
+  0%, 100% {
+    box-shadow: 0 4px 20px rgba(168, 85, 247, 0.3);
+  }
+  50% {
+    box-shadow: 0 4px 30px rgba(168, 85, 247, 0.5);
+  }
+}
+
+@keyframes legendary-glow {
+  0%, 100% {
+    box-shadow: 0 4px 25px rgba(251, 191, 36, 0.4);
+  }
+  50% {
+    box-shadow: 0 4px 35px rgba(251, 191, 36, 0.6);
+  }
+}
+
+@keyframes quantum-border {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
+
+@keyframes quantum-border-animate {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .item-image-container {
+    height: 200px;
+  }
+
+  .item-content {
+    padding: 15px;
+  }
+
+  .item-name {
+    font-size: 1.1rem;
+  }
+
+  .item-description {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .item-image-container {
+    height: 180px;
+  }
+
+  .item-content {
+    padding: 12px;
+  }
+
+  .item-name {
+    font-size: 1rem;
+  }
+
+  .item-description {
+    font-size: 0.8rem;
+    min-height: 35px;
+  }
 }
