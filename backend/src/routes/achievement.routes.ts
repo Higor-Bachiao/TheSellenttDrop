@@ -19,4 +19,7 @@ router.post('/users/:userId/achievements/check', achievementController.checkAchi
 // Obter todas as conquistas disponíveis (admin)
 router.get('/achievements', achievementController.getAllAchievements);
 
+// Debug: Ver estatísticas do usuário
+router.get('/users/:userId/stats', achievementController.getUserStats);
+
 export default router;

@@ -105,9 +105,11 @@ export async function rollGacha(req: Request, res: Response) {
     // Atualizar moedas e adicionar item
     const batch = firestore.batch();
 
-    // Descontar moedas
+    // Descontar moedas e rastrear gastos
+    const currentCoinsSpent = userData?.coinsSpent || 0;
     batch.update(userRef, {
       coins: userCoins - boxCost,
+      coinsSpent: currentCoinsSpent + boxCost, // Rastrear total gasto
       updatedAt: new Date()
     });
 

@@ -33,6 +33,16 @@ const ACHIEVEMENTS = [
     tier: 'bronze'
   },
   {
+    id: 'pulls_20',
+    name:'colecionador medio',
+    description: 'Abra 20 caixas',
+    type: 'PULLS',
+    requirement: 20,
+    reward: 200,
+    icon: '📦',
+    tier: 'bronze'
+  },
+  {
     id: 'pulls_50',
     name: 'Colecionador Experiente',
     description: 'Abra 50 caixas',
@@ -136,6 +146,26 @@ const ACHIEVEMENTS = [
     tier: 'gold'
   },
   // Gastos
+  {
+    id: 'spend_100',
+    name: 'comprador casual',
+    description: 'Gaste 100 moedas',
+    type: 'COINS_SPENT',
+    requirement: 100,
+    reward: 100,
+    icon: '💰',
+    tier: 'bronze'
+  },
+  {
+    id: 'spend_500',
+    name: 'comprador regular',
+    description: 'Gaste 500 moedas',
+    type : 'COINS_SPENT',
+    requirement: 500,
+    reward: 500,
+    icon: '💰',
+    tier: 'bronze'
+  },
   {
     id: 'spend_1000',
     name: 'Comprador Iniciante',
@@ -325,8 +355,17 @@ export const claimReward = async (req: Request, res: Response) => {
     const achievementDoc = achievementSnapshot.docs[0];
     const achievementData = achievementDoc.data();
 
+    console.log(`🎯 Tentando reivindicar conquista ${achievementId}:`, {
+      userId,
+      achievementId,
+      completed: achievementData.completed,
+      claimed: achievementData.claimed,
+      progress: achievementData.progress
+    });
+
     // Verificar se já foi completada
     if (!achievementData.completed) {
+      console.log(`❌ Conquista ${achievementId} não está completada!`);
       return res.status(400).json({
         success: false,
         error: 'Conquista não completada'
@@ -419,6 +458,14 @@ export const checkAchievements = async (req: Request, res: Response) => {
       }
     };
 
+    console.log('📊 Estatísticas do usuário:', {
+      userId,
+      totalPulls: stats.totalPulls,
+      uniqueItems: stats.uniqueItems,
+      coinsSpent: stats.coinsSpent,
+      rarities: stats.rarities
+    });
+
     // Buscar conquistas atuais do usuário
     const achievementsSnapshot = await firestore
       .collection('userAchievements')
@@ -478,6 +525,10 @@ export const checkAchievements = async (req: Request, res: Response) => {
 
       completed = progress >= achievement.requirement;
 
+      console.log(`🏆 Verificando conquista: ${achievement.id} (${achievement.name})`);
+      console.log(`   - Progresso: ${progress}/${achievement.requirement}`);
+      console.log(`   - Completada: ${completed}`);
+
       // Criar ou atualizar conquista do usuário
       const existingAchievement = userAchievements.get(achievement.id);
 
@@ -488,13 +539,16 @@ export const checkAchievements = async (req: Request, res: Response) => {
           achievementId: achievement.id,
           progress,
           completed,
-          claimed: false,
+          claimed: false, // NÃO auto-reivindicar - usuário deve clicar
           createdAt: new Date()
         };
 
         if (completed) {
           newAchievement.completedAt = new Date();
           newAchievements.push(achievement);
+          console.log(`   ✅ Nova conquista criada e completada! (aguardando reivindicação)`);
+        } else {
+          console.log(`   📝 Nova conquista criada (não completada)`);
         }
 
         await firestore.collection('userAchievements').add(newAchievement);
@@ -507,9 +561,12 @@ export const checkAchievements = async (req: Request, res: Response) => {
             completed: true,
             completedAt: new Date()
           });
+          
           newAchievements.push(achievement);
+          console.log(`   ✅ Conquista atualizada para completada! (aguardando reivindicação)`);
         } else if (existingData.progress !== progress) {
           await existingAchievement.ref.update({ progress });
+          console.log(`   📊 Progresso atualizado de ${existingData.progress} para ${progress}`);
         }
       }
     }
@@ -524,6 +581,64 @@ export const checkAchievements = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       error: 'Erro ao verificar conquistas'
+    });
+  }
+};
+
+// Debug: Ver estatísticas do usuário
+export const getUserStats = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+
+    // Buscar dados do usuário
+    const userDoc = await firestore.collection('users').doc(userId).get();
+    if (!userDoc.exists) {
+      return res.status(404).json({
+        success: false,
+        error: 'Usuário não encontrado'
+      });
+    }
+
+    const userData = userDoc.data()!;
+
+    // Buscar itens do usuário
+    const itemsSnapshot = await firestore
+      .collection('userItems')
+      .where('userId', '==', userId)
+      .get();
+
+    const userItems = itemsSnapshot.docs.map((doc: any) => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
+    const uniqueItemIds = new Set(userItems.map((item: any) => item.itemId));
+
+    // Calcular estatísticas
+    const stats = {
+      totalPulls: userItems.length,
+      coinsSpent: userData.coinsSpent || 0,
+      uniqueItems: uniqueItemIds.size,
+      uniqueItemIds: Array.from(uniqueItemIds),
+      rarities: {
+        comum: userItems.filter((item: any) => item.rarity === 'comum').length,
+        raro: userItems.filter((item: any) => item.rarity === 'raro').length,
+        epico: userItems.filter((item: any) => item.rarity === 'epico').length,
+        lendario: userItems.filter((item: any) => item.rarity === 'lendario').length,
+        quantum: userItems.filter((item: any) => item.rarity === 'quantum').length
+      },
+      allItems: userItems
+    };
+
+    res.json({
+      success: true,
+      data: stats
+    });
+  } catch (error) {
+    console.error('Erro ao obter estatísticas:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Erro ao obter estatísticas'
     });
   }
 };

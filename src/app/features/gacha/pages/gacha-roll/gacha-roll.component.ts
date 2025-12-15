@@ -5,6 +5,7 @@ import { GachaService } from '../../../../core/services/gacha.service';
 import { AuthService } from '../../../../core/services/auth.service';
 import { ToastService } from '../../../../core/services/toast.service';
 import { ItemService } from '../../../../core/services/item.service';
+import { AchievementService } from '../../../../core/services/achievement.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 import { Observable } from 'rxjs';
@@ -31,6 +32,7 @@ export class GachaRollComponent implements OnInit {
   private authService = inject(AuthService);
   private toastService = inject(ToastService);
   private itemService = inject(ItemService);
+  private achievementService = inject(AchievementService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private http = inject(HttpClient);
@@ -237,6 +239,27 @@ export class GachaRollComponent implements OnInit {
                 
                 // Recarregar dados do usuário para atualizar moedas
                 this.authService.loadCurrentUser().subscribe();
+                
+                // Verificar novas conquistas desbloqueadas
+                const currentUser = this.authService.getCurrentUser();
+                if (currentUser) {
+                  this.achievementService.checkAchievements(currentUser.uid).subscribe({
+                    next: (checkResponse) => {
+                      if (checkResponse.success && checkResponse.data?.length > 0) {
+                        const newAchievements = checkResponse.data;
+                        // Mostrar notificação para cada nova conquista
+                        newAchievements.forEach((achievement: any) => {
+                          this.toastService.success(`🏆 Conquista desbloqueada: ${achievement.name}!`);
+                        });
+                        // Invalidar cache de conquistas
+                        this.achievementService.invalidateCache();
+                      }
+                    },
+                    error: (err) => {
+                      console.error('Erro ao verificar conquistas:', err);
+                    }
+                  });
+                }
               }, 7000);
             }, 100); // 100ms para garantir renderização
           }

@@ -42,7 +42,8 @@ export class AchievementsMainComponent implements OnInit {
       return;
     }
 
-    this.achievementService.getUserAchievements(user.uid).subscribe({
+    // Forçar refresh para buscar dados mais recentes
+    this.achievementService.getUserAchievements(user.uid, true).subscribe({
       next: (response) => {
         this.achievements = response.data || [];
         this.updateStatistics();
@@ -99,7 +100,10 @@ export class AchievementsMainComponent implements OnInit {
         const reward = response.data?.reward || 0;
         this.toastService.show(`Recompensa reivindicada! +${reward} moedas`, 'success');
         
-        // Invalidar cache antes de recarregar
+        // Recarregar dados do usuário para atualizar moedas
+        this.authService.loadCurrentUser().subscribe();
+        
+        // Invalidar cache e recarregar conquistas
         this.achievementService.invalidateCache();
         this.loadAchievements();
       },
@@ -125,10 +129,12 @@ export class AchievementsMainComponent implements OnInit {
             `🎉 ${newAchievements.length} nova(s) conquista(s) desbloqueada(s)!`, 
             'success'
           );
-          this.loadAchievements();
         } else {
           this.toastService.show('Nenhuma conquista nova encontrada', 'info');
         }
+        // SEMPRE recarregar após verificar (mesmo sem novas conquistas, pode ter progresso atualizado)
+        this.achievementService.invalidateCache();
+        this.loadAchievements();
       },
       error: (err) => {
         console.error('Erro ao verificar conquistas:', err);
