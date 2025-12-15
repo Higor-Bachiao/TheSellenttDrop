@@ -202,17 +202,36 @@ export const getAllAchievements = async (req: Request, res: Response) => {
 export const getUserAchievements = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
+    const authenticatedUser = (req as any).user;
+
+    console.log('🔍 getUserAchievements - userId from params:', userId);
+    console.log('🔍 getUserAchievements - authenticated user uid:', authenticatedUser.uid);
+
+    // Verificar se o usuário autenticado está acessando suas próprias conquistas ou é admin
+    if (authenticatedUser.uid !== userId) {
+      const userDoc = await firestore.collection('users').doc(authenticatedUser.uid).get();
+      const userData = userDoc.data();
+      
+      console.log('🔍 User data:', { uid: authenticatedUser.uid, isAdmin: userData?.isAdmin });
+      
+      if (!userData?.isAdmin) {
+        return res.status(403).json({
+          success: false,
+          error: 'Acesso negado. Você só pode ver suas próprias conquistas.'
+        });
+      }
+    }
 
     // Buscar usuário
-    const userDoc = await firestore.collection('users').doc(userId).get();
-    if (!userDoc.exists) {
+    const targetUserDoc = await firestore.collection('users').doc(userId).get();
+    if (!targetUserDoc.exists) {
       return res.status(404).json({
         success: false,
         error: 'Usuário não encontrado'
       });
     }
 
-    const userData = userDoc.data();
+    const userData = targetUserDoc.data();
 
     // Buscar progresso de conquistas do usuário
     const achievementsSnapshot = await firestore

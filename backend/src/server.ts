@@ -28,9 +28,9 @@ app.get('/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/items', itemRoutes);
 app.use('/api/gacha', gachaRoutes);
-app.use('/api/users', userRoutes);
 app.use('/api/boxes', boxRoutes);
-app.use('/api', achievementRoutes);
+app.use('/api', achievementRoutes); // Registrar achievements ANTES de users para evitar conflito de rotas
+app.use('/api/users', userRoutes);
 
 app.listen(PORT, () => {
   console.log(`✅ Server running on port ${PORT}`);

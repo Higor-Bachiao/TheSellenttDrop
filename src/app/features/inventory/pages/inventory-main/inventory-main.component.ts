@@ -75,13 +75,16 @@ export class InventoryMainComponent implements OnInit {
     });
   }
 
-  getRarityOrder(rarity: number): number {
-    // Ordem: Quantum (1000+) > Lendário (800-999) > Épico (600-799) > Raro (400-599) > Comum (0-399)
-    if (rarity >= 1000) return 5; // Quantum
-    if (rarity >= 800) return 4;  // Lendário
-    if (rarity >= 600) return 3;  // Épico
-    if (rarity >= 400) return 2;  // Raro
-    return 1;                      // Comum
+  getRarityOrder(rarity: string): number {
+    // Ordem: Quantum (5) > Lendário (4) > Épico (3) > Raro (2) > Comum (1)
+    const rarityMap: { [key: string]: number } = {
+      'quantum': 5,
+      'lendario': 4,
+      'epico': 3,
+      'raro': 2,
+      'comum': 1
+    };
+    return rarityMap[rarity?.toLowerCase()] || 0;
   }
 
   sortItems() {
@@ -93,20 +96,23 @@ export class InventoryMainComponent implements OnInit {
     switch (this.sortBy) {
       case 'rarity':
         this.sortedItems.sort((a, b) => {
-          const rarityA = Number(a.rarity) || 0;
-          const rarityB = Number(b.rarity) || 0;
+          // Usar a raridade do item (string), não o rarity numérico
+          const rarityA = a.item?.rarity || '';
+          const rarityB = b.item?.rarity || '';
           const orderA = this.getRarityOrder(rarityA);
           const orderB = this.getRarityOrder(rarityB);
           
-          // Se forem da mesma categoria, ordenar pelo número exato
+          console.log(`Comparando: ${a.item?.name} (${rarityA}=${orderA}) vs ${b.item?.name} (${rarityB}=${orderB})`);
+          
+          // Se forem da mesma categoria, ordenar pelo nome
           if (orderA === orderB) {
-            return rarityB - rarityA;
+            return (a.item?.name || '').localeCompare(b.item?.name || '');
           }
           
           // Caso contrário, ordenar pela categoria (maior primeiro)
           return orderB - orderA;
         });
-        console.log('✅ Ordenado por raridade:', this.sortedItems.map(i => `${i.item.name}: ${i.rarity} (ordem: ${this.getRarityOrder(i.rarity)})`));
+        console.log('✅ Ordenado por raridade:', this.sortedItems.map(i => `${i.item?.name}: ${i.item?.rarity} (ordem: ${this.getRarityOrder(i.item?.rarity || '')})`));
         break;
       case 'date':
         this.sortedItems.sort((a, b) => {

@@ -85,8 +85,8 @@ Gacha é um sistema de recompensas aleatórias popularizado por jogos japoneses,
 
 | Raridade | Cor | Efeito |
 |----------|-----|--------|
-| Common | Cinza | Borda simples |
-| Rare | Azul | Brilho suave |
+| Common | Azul | Borda simples |
+| Rare | Laranja | Brilho suave |
 | Epic | Roxo | Animação pulsante |
 | Legendary | Dourado | Brilho intenso rotativo |
 | Quantum | Arco-íris | Gradiente animado multicolorido |
@@ -312,7 +312,7 @@ POST   /api/achievements/claim    # Resgatar recompensa
 ### Principais Raridades
 
 **Common (Comum)**
-- Cor: Cinza (#64748b)
+- Cor: Azul 
 - Efeito: Borda simples
 - Probabilidade: 60%
 
@@ -353,18 +353,11 @@ Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalh
 
 ---
 
-## 🙏 Agradecimentos
-
-- Firebase por fornecer infraestrutura confiável
-- Comunidade Angular pelos excelentes recursos
-- Você, por usar este projeto! 🎉
-
----
 
 <div align="center">
 
 **⭐ Se você gostou deste projeto, deixe uma estrela! ⭐**
 
-Feito com ❤️ e muita ☕
+
 
 </div>
