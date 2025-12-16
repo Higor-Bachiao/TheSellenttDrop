@@ -49,7 +49,7 @@
 .login-card {
   background: #ffffff;
   border-radius: 20px;
-  padding: 45px 40px;
+  padding: 10px 20px;
   box-shadow: 
     0 0 0 8px #ff8c00,
     0 0 0 12px #ffa500,
@@ -70,7 +70,7 @@
 /* Cabeçalho */
 .login-header {
   text-align: center;
-  margin-bottom: 35px;
+  margin-bottom: 5px;
 }
 
 .slot-machine-icon {
