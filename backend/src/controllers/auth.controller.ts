@@ -78,7 +78,7 @@ export async function register(req: Request, res: Response) {
       email: userRecord.email,
       displayName: displayName,
       role: UserRole.JOGADOR,
-      coins: 1000, // Moedas iniciais de boas-vindas
+      coins: 1500, // Moedas iniciais de boas-vindas
       emailVerified: false,
       createdAt: new Date(),
       updatedAt: new Date()
