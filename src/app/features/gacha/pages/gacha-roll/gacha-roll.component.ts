@@ -322,6 +322,10 @@ export class GachaRollComponent implements OnInit {
     requestAnimationFrame(animate);
   }
 
+  goBack() {
+    this.router.navigate(['/gacha']);
+  }
+
   closeResult() {
     this.showResult = false;
     this.result = null;

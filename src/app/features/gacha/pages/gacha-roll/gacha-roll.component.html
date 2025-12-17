@@ -1,4 +1,10 @@
 <div class="gacha-container">
+  <!-- Botão Voltar -->
+  <button class="btn-back" (click)="goBack()" *ngIf="currentBox">
+    <i class="bi bi-arrow-left-circle"></i>
+    <span>Voltar</span>
+  </button>
+
   <!-- Gacha Box -->
   <div class="gacha-box" *ngIf="currentBox">
     <div class="box-header">
