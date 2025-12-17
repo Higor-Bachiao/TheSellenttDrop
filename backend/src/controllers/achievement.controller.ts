@@ -177,6 +177,16 @@ const ACHIEVEMENTS = [
     tier: 'bronze'
   },
   {
+    id: 'spend_1500',
+    name: 'Comprador Avançado',
+    description: 'Gaste 1.500 moedas',
+    type: 'COINS_SPENT',
+    requirement: 1500,
+    reward: 200,
+    icon: '💰',
+    tier: 'silver'
+  },
+  {
     id: 'spend_10000',
     name: 'Grande Gastador',
     description: 'Gaste 10.000 moedas',

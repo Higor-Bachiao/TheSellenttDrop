@@ -57,7 +57,16 @@ export class UserManagementComponent implements OnInit {
     this.error = null;
     this.http.get<{ data: User[] }>(`${environment.apiUrl}/users`).subscribe({
       next: (response) => {
-        this.users = response.data || [];
+        this.users = (response.data || []).map(user => {
+          // Firestore Timestamps são serializados para objetos com _seconds
+          if (user.createdAt && (user.createdAt as any)._seconds) {
+            return {
+              ...user,
+              createdAt: new Date((user.createdAt as any)._seconds * 1000)
+            };
+          }
+          return user;
+        });
         this.loading = false;
       },
       error: (err) => {
@@ -91,9 +100,15 @@ export class UserManagementComponent implements OnInit {
     
     this.http.get<any>(`${environment.apiUrl}/users/${user.uid}/items`).subscribe({
       next: (response) => {
-        console.log('Response da API de itens:', response);
-        // A API retorna { success: true, data: [...] }
-        this.userItems = response.data || [];
+        this.userItems = (response.data || []).map((userItem: UserItem) => {
+          if (userItem.obtainedAt && (userItem.obtainedAt as any)._seconds) {
+            return {
+              ...userItem,
+              obtainedAt: new Date((userItem.obtainedAt as any)._seconds * 1000)
+            };
+          }
+          return userItem;
+        });
         this.loadingItems = false;
       },
       error: (err) => {
