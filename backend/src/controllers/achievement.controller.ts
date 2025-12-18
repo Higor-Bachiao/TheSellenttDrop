@@ -23,6 +23,16 @@ const ACHIEVEMENTS = [
     tier: 'bronze'
   },
   {
+    id: 'pulls_5',
+    name: 'Colecionador Iniciante',
+    description: 'Abra 5 caixas',
+    type: 'PULLS',
+    requirement: 5,
+    reward: 100,
+    icon: '📦',
+    tier: 'bronze'
+  },
+  {
     id: 'pulls_10',
     name: 'Colecionador Iniciante',
     description: 'Abra 10 caixas',
