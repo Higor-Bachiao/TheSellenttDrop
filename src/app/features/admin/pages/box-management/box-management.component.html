@@ -1,4 +1,31 @@
 <div class="box-management-container">
+  <!-- Decoração de fundo - símbolos de caça-níquel -->
+  <div class="slot-symbols">
+    <div class="symbol">🍒</div>
+    <div class="symbol">💎</div>
+    <div class="symbol">⭐</div>
+    <div class="symbol">🎰</div>
+    <div class="symbol">7️⃣</div>
+    <div class="symbol">🍋</div>
+    <div class="symbol">🔔</div>
+    <div class="symbol">💰</div>
+    <div class="symbol">🎲</div>
+    <div class="symbol">🎯</div>
+    <div class="symbol">💎</div>
+    <div class="symbol">🏆</div>
+    <div class="symbol">💍</div>
+    <div class="symbol">👑</div>
+    <div class="symbol">🔥</div>
+    <div class="symbol">⚡</div>
+    <div class="symbol">🌟</div>
+    <div class="symbol">💎</div>
+    <div class="symbol">🎪</div>
+    <div class="symbol">🎨</div>
+    <div class="symbol">🎭</div>
+    <div class="symbol">🎪</div>
+    <div class="symbol">🎯</div>
+    <div class="symbol">🎲</div>
+  </div>
   <div class="header">
     <button class="btn-back" (click)="goBack()">
       <i class="bi bi-arrow-left"></i> Voltar
@@ -20,7 +47,7 @@
   <div *ngIf="!loading && !error" class="boxes-grid">
     <div class="box-card" *ngFor="let box of boxes">
       <div class="box-image">
-        <img [src]="box.imageUrl" [alt]="box.name">
+        <img [src]="box.imageUrl" [alt]="box.name" />
       </div>
       <div class="box-info">
         <h3>{{ box.name }}</h3>
@@ -44,7 +71,7 @@
   <div class="modal-backdrop" *ngIf="showModal" (click)="closeModal()">
     <div class="modal-content" (click)="$event.stopPropagation()">
       <div class="modal-header">
-        <h2>{{ editingBox ? 'Editar Caixa' : 'Adicionar Caixa' }}</h2>
+        <h2>{{ editingBox ? "Editar Caixa" : "Adicionar Caixa" }}</h2>
         <button class="btn-close" (click)="closeModal()">
           <i class="bi bi-x-lg"></i>
         </button>
@@ -60,7 +87,7 @@
               name="name"
               required
               placeholder="Ex: Caixa Misteriosa"
-            >
+            />
           </div>
 
           <div class="form-group">
@@ -82,9 +109,9 @@
               [(ngModel)]="formData.imageUrl"
               name="imageUrl"
               placeholder="https://exemplo.com/imagem.png"
-            >
+            />
             <div class="image-preview" *ngIf="formData.imageUrl">
-              <img [src]="formData.imageUrl" alt="Preview">
+              <img [src]="formData.imageUrl" alt="Preview" />
             </div>
           </div>
 
@@ -98,8 +125,10 @@
               required
               min="1"
               placeholder="Ex: 100"
+            />
+            <small
+              >Quantidade de moedas necessárias para abrir esta caixa</small
             >
-            <small>Quantidade de moedas necessárias para abrir esta caixa</small>
           </div>
 
           <div class="form-actions">

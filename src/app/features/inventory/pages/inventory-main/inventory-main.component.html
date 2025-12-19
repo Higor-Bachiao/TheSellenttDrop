@@ -27,14 +27,16 @@
   </div>
   <div class="header">
     <h1>
-      <i class="bi bi-box-seam"></i> Meu Inventário
+      <i class="bi bi-treasure"></i> Meu Inventario 
     </h1>
     <div class="sort-controls">
-      <label for="sort">Ordenar por:</label>
+      <label for="sort">
+        <i class="bi bi-funnel"></i> Organizar por:
+      </label>
       <select id="sort" [value]="sortBy" (change)="onSortChange($event)" class="sort-select">
-        <option value="rarity">Raridade</option>
-        <option value="date">Data de Obtenção</option>
-        <option value="quantity">Quantidade</option>
+        <option value="rarity">✨ Raridade</option>
+        <option value="date">📅 Data de Obtenção</option>
+        <option value="quantity">🔢 Quantidade</option>
       </select>
     </div>
   </div>

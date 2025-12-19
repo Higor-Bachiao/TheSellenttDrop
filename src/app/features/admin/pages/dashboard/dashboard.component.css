@@ -1,61 +1,111 @@
-.admin-dashboard {
+.admin-dashboard-container {
   padding: 2rem;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-}
-/* Símbolos de caça-níquel flutuando no fundo */
-.slot-symbols {
-  position: absolute;
   width: 100%;
-  height: 100%;
-  overflow: hidden;
-  opacity: 0.08;
-  z-index: 0;
+  position: relative;
+  min-height: 100vh;
+  overflow: visible;
 }
 
-.slot-symbols .symbol {
+/* Símbolos decorativos de admin */
+.admin-symbols {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  opacity: 0.06;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.admin-symbols .symbol {
   position: absolute;
   font-size: clamp(2rem, 4vw, 3.5rem);
-  animation: float 20s infinite;
+  animation: float 25s infinite ease-in-out;
+  user-select: none;
 }
 
-.slot-symbols .symbol:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; font-size: clamp(2.5rem, 5vw, 4rem); }
-.slot-symbols .symbol:nth-child(2) { left: 80%; top: 10%; animation-delay: 2s; font-size: clamp(1.8rem, 3vw, 2.8rem); }
-.slot-symbols .symbol:nth-child(3) { left: 50%; top: 80%; animation-delay: 4s; font-size: clamp(2.2rem, 4vw, 3.2rem); }
-.slot-symbols .symbol:nth-child(4) { left: 20%; top: 70%; animation-delay: 6s; font-size: clamp(2.8rem, 5vw, 4.2rem); }
-.slot-symbols .symbol:nth-child(5) { left: 70%; top: 60%; animation-delay: 8s; font-size: clamp(1.5rem, 2.5vw, 2.2rem); }
-.slot-symbols .symbol:nth-child(6) { left: 40%; top: 30%; animation-delay: 10s; font-size: clamp(2rem, 3.5vw, 3rem); }
-.slot-symbols .symbol:nth-child(7) { left: 90%; top: 50%; animation-delay: 12s; font-size: clamp(2.5rem, 4.5vw, 3.8rem); }
-.slot-symbols .symbol:nth-child(8) { left: 15%; top: 40%; animation-delay: 14s; font-size: clamp(1.8rem, 3vw, 2.6rem); }
-.slot-symbols .symbol:nth-child(9) { left: 85%; top: 25%; animation-delay: 16s; font-size: clamp(2.3rem, 4vw, 3.5rem); }
-.slot-symbols .symbol:nth-child(10) { left: 5%; top: 85%; animation-delay: 18s; font-size: clamp(1.6rem, 2.8vw, 2.4rem); }
-.slot-symbols .symbol:nth-child(11) { left: 60%; top: 15%; animation-delay: 20s; font-size: clamp(2.7rem, 4.8vw, 4.1rem); }
-.slot-symbols .symbol:nth-child(12) { left: 30%; top: 55%; animation-delay: 22s; font-size: clamp(1.9rem, 3.2vw, 2.9rem); }
-.slot-symbols .symbol:nth-child(13) { left: 75%; top: 35%; animation-delay: 24s; font-size: clamp(2.1rem, 3.8vw, 3.3rem); }
-.slot-symbols .symbol:nth-child(14) { left: 25%; top: 10%; animation-delay: 26s; font-size: clamp(2.4rem, 4.2vw, 3.7rem); }
-.slot-symbols .symbol:nth-child(15) { left: 95%; top: 75%; animation-delay: 28s; font-size: clamp(1.7rem, 3vw, 2.5rem); }
-.slot-symbols .symbol:nth-child(16) { left: 35%; top: 90%; animation-delay: 30s; font-size: clamp(2.6rem, 4.6vw, 3.9rem); }
-.slot-symbols .symbol:nth-child(17) { left: 55%; top: 45%; animation-delay: 32s; font-size: clamp(1.4rem, 2.2vw, 2rem); }
-.slot-symbols .symbol:nth-child(18) { left: 45%; top: 5%; animation-delay: 34s; font-size: clamp(2.9rem, 5.2vw, 4.3rem); }
-.slot-symbols .symbol:nth-child(19) { left: 65%; top: 95%; animation-delay: 36s; font-size: clamp(1.8rem, 3.1vw, 2.7rem); }
-.slot-symbols .symbol:nth-child(20) { left: 12%; top: 65%; animation-delay: 38s; font-size: clamp(2.2rem, 3.9vw, 3.4rem); }
-.slot-symbols .symbol:nth-child(21) { left: 88%; top: 85%; animation-delay: 40s; font-size: clamp(1.5rem, 2.6vw, 2.3rem); }
-.slot-symbols .symbol:nth-child(22) { left: 52%; top: 25%; animation-delay: 42s; font-size: clamp(2.8rem, 5vw, 4.2rem); }
+.admin-symbols .symbol:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; font-size: clamp(2.5rem, 5vw, 4rem); }
+.admin-symbols .symbol:nth-child(2) { left: 80%; top: 10%; animation-delay: 2s; font-size: clamp(1.8rem, 3vw, 2.8rem); }
+.admin-symbols .symbol:nth-child(3) { left: 50%; top: 80%; animation-delay: 4s; font-size: clamp(2.2rem, 4vw, 3.2rem); }
+.admin-symbols .symbol:nth-child(4) { left: 20%; top: 70%; animation-delay: 6s; font-size: clamp(2.8rem, 5vw, 4.2rem); }
+.admin-symbols .symbol:nth-child(5) { left: 70%; top: 60%; animation-delay: 8s; font-size: clamp(1.5rem, 2.5vw, 2.2rem); }
+.admin-symbols .symbol:nth-child(6) { left: 40%; top: 30%; animation-delay: 10s; font-size: clamp(2rem, 3.5vw, 3rem); }
+.admin-symbols .symbol:nth-child(7) { left: 90%; top: 50%; animation-delay: 12s; font-size: clamp(2.5rem, 4.5vw, 3.8rem); }
+.admin-symbols .symbol:nth-child(8) { left: 15%; top: 40%; animation-delay: 14s; font-size: clamp(1.8rem, 3vw, 2.6rem); }
+.admin-symbols .symbol:nth-child(9) { left: 85%; top: 25%; animation-delay: 16s; font-size: clamp(2.3rem, 4vw, 3.5rem); }
+.admin-symbols .symbol:nth-child(10) { left: 5%; top: 85%; animation-delay: 18s; font-size: clamp(1.6rem, 2.8vw, 2.4rem); }
+.admin-symbols .symbol:nth-child(11) { left: 60%; top: 15%; animation-delay: 20s; font-size: clamp(2.7rem, 4.8vw, 4.1rem); }
+.admin-symbols .symbol:nth-child(12) { left: 30%; top: 55%; animation-delay: 22s; font-size: clamp(1.9rem, 3.2vw, 2.9rem); }
+.admin-symbols .symbol:nth-child(13) { left: 75%; top: 35%; animation-delay: 24s; font-size: clamp(2.1rem, 3.8vw, 3.3rem); }
+.admin-symbols .symbol:nth-child(14) { left: 25%; top: 10%; animation-delay: 26s; font-size: clamp(2.4rem, 4.2vw, 3.7rem); }
+.admin-symbols .symbol:nth-child(15) { left: 95%; top: 75%; animation-delay: 28s; font-size: clamp(1.7rem, 3vw, 2.5rem); }
+.admin-symbols .symbol:nth-child(16) { left: 35%; top: 90%; animation-delay: 30s; font-size: clamp(2.6rem, 4.6vw, 3.9rem); }
 
-
-h1 {
-  color: #fff;
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
-  text-align: center;
-  text-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  25% { transform: translateY(-20px) rotate(5deg); }
+  50% { transform: translateY(-10px) rotate(-5deg); }
+  75% { transform: translateY(-30px) rotate(3deg); }
 }
 
-.subtitle {
-  color: rgba(255, 255, 255, 0.7);
+.header {
   text-align: center;
-  font-size: 1.1rem;
   margin-bottom: 3rem;
+  padding: 2rem 3rem;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  border: 2px solid rgba(249, 115, 22, 0.3);
+  box-shadow:
+    0 8px 32px rgba(249, 115, 22, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(249, 115, 22, 0.1) 50%,
+    transparent 100%);
+  animation: shimmer 4s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+.header h1 {
+  font-size: 3rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #fbbf24 0%, #f97316 30%, #fbbf24 60%, #f97316 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  text-shadow: 0 0 30px rgba(251, 191, 36, 0.5);
+}
+
+.header .subtitle {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  font-weight: 500;
 }
 
 .admin-cards {
@@ -176,20 +226,92 @@ h1 {
   color: #ffd700;
 }
 
-@media (max-width: 768px) {
-  .admin-cards {
-    grid-template-columns: 1fr;
+/* Responsive */
+@media (max-width: 1024px) {
+  .admin-dashboard-container {
+    padding: 1.5rem;
   }
 
-  h1 {
-    font-size: 2rem;
+  .header {
+    padding: 1.5rem 2rem;
+  }
+
+  .header h1 {
+    font-size: 2.8rem;
+  }
+
+  .admin-cards {
+    gap: 1.25rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-dashboard-container {
+    padding: 1rem;
+  }
+
+  .header {
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .header h1 {
+    font-size: 2.2rem;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .header .subtitle {
+    font-size: 1.1rem;
+  }
+
+  .admin-cards {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
   .admin-card {
     padding: 1.5rem;
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
   }
 
   .card-icon {
     font-size: 2.5rem;
+  }
+
+  .card-content h2 {
+    font-size: 1.3rem;
+  }
+
+  .card-content p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 1rem;
+  }
+
+  .header h1 {
+    font-size: 1.8rem;
+  }
+
+  .header .subtitle {
+    font-size: 1rem;
+  }
+
+  .admin-card {
+    padding: 1.25rem;
+  }
+
+  .card-icon {
+    font-size: 2rem;
+  }
+
+  .card-content h2 {
+    font-size: 1.2rem;
   }
 }

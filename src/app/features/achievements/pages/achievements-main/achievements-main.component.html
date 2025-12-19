@@ -1,11 +1,31 @@
 <div class="achievements-page">
+  <!-- Decoração de fundo - símbolos de troféus -->
+  <div class="trophy-symbols">
+    <div class="symbol">🏆</div>
+    <div class="symbol">🎖️</div>
+    <div class="symbol">⭐</div>
+    <div class="symbol">👑</div>
+    <div class="symbol">💎</div>
+    <div class="symbol">🔥</div>
+    <div class="symbol">⚡</div>
+    <div class="symbol">🌟</div>
+    <div class="symbol">🎯</div>
+    <div class="symbol">🏅</div>
+    <div class="symbol">🎪</div>
+    <div class="symbol">🎨</div>
+    <div class="symbol">🎭</div>
+    <div class="symbol">🎪</div>
+    <div class="symbol">🎯</div>
+    <div class="symbol">🎲</div>
+  </div>
+
   <!-- Header -->
   <div class="page-header">
     <h1>
       <i class="bi bi-trophy-fill"></i>
-      Conquistas
+      Suas Conquistas
     </h1>
-    <p class="subtitle">Desbloqueie conquistas e ganhe recompensas!</p>
+    <p class="subtitle">🏆 Desbloqueie glórias e conquiste o topo! 🏆</p>
   </div>
 
   <!-- Painel de Estatísticas -->
@@ -43,38 +63,44 @@
   </div>
 
   <!-- Filtros -->
-  <div class="filters">
-    <button 
-      class="filter-btn" 
-      [class.active]="currentFilter === 'all'"
-      (click)="applyFilter('all')">
-      <i class="bi bi-grid-3x3"></i>
-      Todas ({{ achievements.length }})
-    </button>
+  <div class="filters-container">
+    <div class="filters-header">
+      <i class="bi bi-funnel"></i>
+      <span>Filtrar Conquistas</span>
+    </div>
+    <div class="filters">
+      <button 
+        class="filter-btn" 
+        [class.active]="currentFilter === 'all'"
+        (click)="applyFilter('all')">
+        <i class="bi bi-grid-3x3"></i>
+        Todas ({{ achievements.length }})
+      </button>
 
-    <button 
-      class="filter-btn" 
-      [class.active]="currentFilter === 'completed'"
-      (click)="applyFilter('completed')">
-      <i class="bi bi-check-circle-fill"></i>
-      Completadas ({{ completedCount }})
-    </button>
+      <button 
+        class="filter-btn" 
+        [class.active]="currentFilter === 'completed'"
+        (click)="applyFilter('completed')">
+        <i class="bi bi-check-circle-fill"></i>
+        Completadas ({{ completedCount }})
+      </button>
 
-    <button 
-      class="filter-btn" 
-      [class.active]="currentFilter === 'in-progress'"
-      (click)="applyFilter('in-progress')">
-      <i class="bi bi-hourglass-split"></i>
-      Em Progresso
-    </button>
+      <button 
+        class="filter-btn" 
+        [class.active]="currentFilter === 'in-progress'"
+        (click)="applyFilter('in-progress')">
+        <i class="bi bi-hourglass-split"></i>
+        Em Progresso
+      </button>
 
-    <button 
-      class="filter-btn" 
-      [class.active]="currentFilter === 'locked'"
-      (click)="applyFilter('locked')">
-      <i class="bi bi-lock-fill"></i>
-      Bloqueadas
-    </button>
+      <button 
+        class="filter-btn" 
+        [class.active]="currentFilter === 'locked'"
+        (click)="applyFilter('locked')">
+        <i class="bi bi-lock-fill"></i>
+        Bloqueadas
+      </button>
+    </div>
   </div>
 
   <!-- Loading -->
