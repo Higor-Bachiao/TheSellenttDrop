@@ -3,6 +3,45 @@
   max-width: 1200px;
   margin: 0 auto;
 }
+/* Símbolos de caça-níquel flutuando no fundo */
+.slot-symbols {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  opacity: 0.08;
+  z-index: 0;
+}
+
+.slot-symbols .symbol {
+  position: absolute;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  animation: float 20s infinite;
+}
+
+.slot-symbols .symbol:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; font-size: clamp(2.5rem, 5vw, 4rem); }
+.slot-symbols .symbol:nth-child(2) { left: 80%; top: 10%; animation-delay: 2s; font-size: clamp(1.8rem, 3vw, 2.8rem); }
+.slot-symbols .symbol:nth-child(3) { left: 50%; top: 80%; animation-delay: 4s; font-size: clamp(2.2rem, 4vw, 3.2rem); }
+.slot-symbols .symbol:nth-child(4) { left: 20%; top: 70%; animation-delay: 6s; font-size: clamp(2.8rem, 5vw, 4.2rem); }
+.slot-symbols .symbol:nth-child(5) { left: 70%; top: 60%; animation-delay: 8s; font-size: clamp(1.5rem, 2.5vw, 2.2rem); }
+.slot-symbols .symbol:nth-child(6) { left: 40%; top: 30%; animation-delay: 10s; font-size: clamp(2rem, 3.5vw, 3rem); }
+.slot-symbols .symbol:nth-child(7) { left: 90%; top: 50%; animation-delay: 12s; font-size: clamp(2.5rem, 4.5vw, 3.8rem); }
+.slot-symbols .symbol:nth-child(8) { left: 15%; top: 40%; animation-delay: 14s; font-size: clamp(1.8rem, 3vw, 2.6rem); }
+.slot-symbols .symbol:nth-child(9) { left: 85%; top: 25%; animation-delay: 16s; font-size: clamp(2.3rem, 4vw, 3.5rem); }
+.slot-symbols .symbol:nth-child(10) { left: 5%; top: 85%; animation-delay: 18s; font-size: clamp(1.6rem, 2.8vw, 2.4rem); }
+.slot-symbols .symbol:nth-child(11) { left: 60%; top: 15%; animation-delay: 20s; font-size: clamp(2.7rem, 4.8vw, 4.1rem); }
+.slot-symbols .symbol:nth-child(12) { left: 30%; top: 55%; animation-delay: 22s; font-size: clamp(1.9rem, 3.2vw, 2.9rem); }
+.slot-symbols .symbol:nth-child(13) { left: 75%; top: 35%; animation-delay: 24s; font-size: clamp(2.1rem, 3.8vw, 3.3rem); }
+.slot-symbols .symbol:nth-child(14) { left: 25%; top: 10%; animation-delay: 26s; font-size: clamp(2.4rem, 4.2vw, 3.7rem); }
+.slot-symbols .symbol:nth-child(15) { left: 95%; top: 75%; animation-delay: 28s; font-size: clamp(1.7rem, 3vw, 2.5rem); }
+.slot-symbols .symbol:nth-child(16) { left: 35%; top: 90%; animation-delay: 30s; font-size: clamp(2.6rem, 4.6vw, 3.9rem); }
+.slot-symbols .symbol:nth-child(17) { left: 55%; top: 45%; animation-delay: 32s; font-size: clamp(1.4rem, 2.2vw, 2rem); }
+.slot-symbols .symbol:nth-child(18) { left: 45%; top: 5%; animation-delay: 34s; font-size: clamp(2.9rem, 5.2vw, 4.3rem); }
+.slot-symbols .symbol:nth-child(19) { left: 65%; top: 95%; animation-delay: 36s; font-size: clamp(1.8rem, 3.1vw, 2.7rem); }
+.slot-symbols .symbol:nth-child(20) { left: 12%; top: 65%; animation-delay: 38s; font-size: clamp(2.2rem, 3.9vw, 3.4rem); }
+.slot-symbols .symbol:nth-child(21) { left: 88%; top: 85%; animation-delay: 40s; font-size: clamp(1.5rem, 2.6vw, 2.3rem); }
+.slot-symbols .symbol:nth-child(22) { left: 52%; top: 25%; animation-delay: 42s; font-size: clamp(2.8rem, 5vw, 4.2rem); }
+
 
 h1 {
   color: #fff;

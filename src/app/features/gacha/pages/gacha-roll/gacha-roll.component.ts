@@ -218,49 +218,9 @@ export class GachaRollComponent implements OnInit {
               console.log('  - Centro do item:', itemCenterY.toFixed(2), 'px');
               console.log('  - Posição final (translateY):', finalPosition.toFixed(2), 'px');
               
-              // Fase 1: Giro rápido (2s)
-              this.animateFastSpin(finalPosition);
+              // Animação única: começar rápido e desacelerar gradualmente
+              this.animateSlotMachine(finalPosition);
               
-              // Fase 2: Desaceleração lenta (3s)
-              setTimeout(() => {
-                this.animationPhase = 'slow';
-                this.animateSlowdown(finalPosition);
-              }, 2000);
-              
-              // Fase 3: Mostrar resultado (após 2s + 3s + 2s de pausa = 7s total)
-              setTimeout(() => {
-                this.animationPhase = 'stop';
-                this.showResult = true;
-                this.isRolling = false;
-                this.toastService.success(response.message || 'Item obtido!');
-                
-                // Invalidar cache do inventário para forçar refresh
-                this.itemService.invalidateCache();
-                
-                // Recarregar dados do usuário para atualizar moedas
-                this.authService.loadCurrentUser().subscribe();
-                
-                // Verificar novas conquistas desbloqueadas
-                const currentUser = this.authService.getCurrentUser();
-                if (currentUser) {
-                  this.achievementService.checkAchievements(currentUser.uid).subscribe({
-                    next: (checkResponse) => {
-                      if (checkResponse.success && checkResponse.data?.length > 0) {
-                        const newAchievements = checkResponse.data;
-                        // Mostrar notificação para cada nova conquista
-                        newAchievements.forEach((achievement: any) => {
-                          this.toastService.success(`🏆 Conquista desbloqueada: ${achievement.name}!`);
-                        });
-                        // Invalidar cache de conquistas
-                        this.achievementService.invalidateCache();
-                      }
-                    },
-                    error: (err) => {
-                      console.error('Erro ao verificar conquistas:', err);
-                    }
-                  });
-                }
-              }, 7000);
             }, 100); // 100ms para garantir renderização
           }
         }
@@ -273,56 +233,73 @@ export class GachaRollComponent implements OnInit {
     });
   }
 
-  animateFastSpin(finalPosition: number) {
+  animateSlotMachine(finalPosition: number) {
     const startTime = Date.now();
-    const duration = 2000; // 2 segundos de spin rápido
-    const startPosition = 0;
-    const intermediatePosition = finalPosition - 1500; // Ir além e depois voltar
+    const duration = 9500; // 6.5 segundos total para uma desaceleração mais gradual
+    const startPosition = -1000; // Começar 1000px acima (itens invisíveis)
+    this.slotPosition = startPosition;
 
     const animate = () => {
       const elapsed = Date.now() - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      
-      // Easing linear para spin constante e rápido
-      const eased = progress;
-      this.slotPosition = startPosition + (intermediatePosition - startPosition) * eased;
-      
-      if (progress < 1 && this.animationPhase === 'fast') {
+
+      // Easing que começa rápido e desacelera gradualmente
+      // Usando ease-out quartic: começa muito rápido, desacelera suavemente
+      const eased = 1 - Math.pow(1 - progress, 4);
+
+      this.slotPosition = startPosition + (finalPosition - startPosition) * eased;
+
+      if (progress < 1) {
         requestAnimationFrame(animate);
+      } else {
+        // Garantir que para exatamente na posição final
+        this.slotPosition = finalPosition;
+        this.animationPhase = 'stop';
+        this.showResult = true;
+        this.isRolling = false;
+        this.toastService.success('Item obtido!');
+        
+        console.log('🎯 Animação completa - Parou na posição:', finalPosition, 'px');
+        
+        // Invalidar cache do inventário para forçar refresh
+        this.itemService.invalidateCache();
+        
+        // Recarregar dados do usuário para atualizar moedas
+        this.authService.loadCurrentUser().subscribe();
+        
+        // Verificar novas conquistas desbloqueadas
+        const currentUser = this.authService.getCurrentUser();
+        if (currentUser) {
+          this.achievementService.checkAchievements(currentUser.uid).subscribe({
+            next: (checkResponse) => {
+              if (checkResponse.success && checkResponse.data?.length > 0) {
+                const newAchievements = checkResponse.data;
+                // Mostrar notificação para cada nova conquista
+                newAchievements.forEach((achievement: any) => {
+                  this.toastService.success(`🏆 Conquista desbloqueada: ${achievement.name}!`);
+                });
+                // Invalidar cache de conquistas
+                this.achievementService.invalidateCache();
+              }
+            },
+            error: (err) => {
+              console.error('Erro ao verificar conquistas:', err);
+            }
+          });
+        }
       }
     };
-    
+
     requestAnimationFrame(animate);
+  }
+
+  animateFastSpin(finalPosition: number) {
+    // Método mantido para compatibilidade, mas não usado
   }
 
   animateSlowdown(finalPosition: number) {
-    const startTime = Date.now();
-    const duration = 3000; // 3 segundos de desaceleração - MAIS LENTO
-    const startPosition = this.slotPosition;
-
-    const animate = () => {
-      const elapsed = Date.now() - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      
-      // Easing cubic-out: desaceleração suave e gradual, sem bounce
-      // Quanto mais próximo de 1, mais lenta a desaceleração
-      const eased = 1 - Math.pow(1 - progress, 3);
-      
-      this.slotPosition = startPosition + (finalPosition - startPosition) * eased;
-      
-      if (progress < 1 && this.animationPhase === 'slow') {
-        requestAnimationFrame(animate);
-      } else if (progress >= 1) {
-        // Garantir que para exatamente na posição final
-        this.slotPosition = finalPosition;
-        console.log('🎯 Parou na posição:', finalPosition, 'px');
-      }
-    };
-    
-    requestAnimationFrame(animate);
-  }
-
-  goBack() {
+    // Método mantido para compatibilidade, mas não usado
+  }  goBack() {
     this.router.navigate(['/gacha']);
   }
 

@@ -89,67 +89,59 @@ export class InventoryMainComponent implements OnInit {
 
   sortItems() {
     this.sortedItems = [...this.items];
-    
-    console.log('🔄 Ordenando por:', this.sortBy);
-    console.log('📦 Itens antes:', this.sortedItems.length);
-    
+
     switch (this.sortBy) {
       case 'rarity':
         this.sortedItems.sort((a, b) => {
-          // Usar a raridade do item (string), não o rarity numérico
           const rarityA = a.item?.rarity || '';
           const rarityB = b.item?.rarity || '';
           const orderA = this.getRarityOrder(rarityA);
           const orderB = this.getRarityOrder(rarityB);
-          
-          console.log(`Comparando: ${a.item?.name} (${rarityA}=${orderA}) vs ${b.item?.name} (${rarityB}=${orderB})`);
-          
+
           // Se forem da mesma categoria, ordenar pelo nome
           if (orderA === orderB) {
             return (a.item?.name || '').localeCompare(b.item?.name || '');
           }
-          
+
           // Caso contrário, ordenar pela categoria (maior primeiro)
           return orderB - orderA;
         });
-        console.log('✅ Ordenado por raridade:', this.sortedItems.map(i => `${i.item?.name}: ${i.item?.rarity} (ordem: ${this.getRarityOrder(i.item?.rarity || '')})`));
         break;
       case 'date':
         this.sortedItems.sort((a, b) => {
           const getTimestamp = (obtainedAt: any): number => {
             if (!obtainedAt) return 0;
-            
-            // Firestore Timestamp com método toDate()
-            if (typeof obtainedAt.toDate === 'function') {
-              return obtainedAt.toDate().getTime();
+
+            // Agora o backend retorna timestamps numéricos diretamente
+            if (typeof obtainedAt === 'number') {
+              return obtainedAt;
             }
-            
-            // Date object
+
+            // Fallback para outros formatos (por compatibilidade)
+            if (typeof obtainedAt === 'string') {
+              const date = new Date(obtainedAt);
+              return isNaN(date.getTime()) ? 0 : date.getTime();
+            }
+
             if (obtainedAt instanceof Date) {
               return obtainedAt.getTime();
             }
-            
-            // Formato Firestore serializado: {_seconds, _nanoseconds}
-            if (typeof obtainedAt._seconds === 'number') {
-              return obtainedAt._seconds * 1000 + Math.floor((obtainedAt._nanoseconds || 0) / 1000000);
+
+            if (typeof obtainedAt.toDate === 'function') {
+              return obtainedAt.toDate().getTime();
             }
-            
-            // Formato alternativo: {seconds, nanoseconds}
-            if (typeof obtainedAt.seconds === 'number') {
-              return obtainedAt.seconds * 1000 + Math.floor((obtainedAt.nanoseconds || 0) / 1000000);
-            }
-            
-            // Tentar converter string ou número
-            const timestamp = new Date(obtainedAt).getTime();
-            return isNaN(timestamp) ? 0 : timestamp;
+
+            return 0;
           };
-          
+
           const timestampA = getTimestamp(a.obtainedAt);
           const timestampB = getTimestamp(b.obtainedAt);
-          
+
+          // Debug temporário
+          console.log(`🔄 Comparando: ${a.item?.name} (${new Date(timestampA).toLocaleString()}) vs ${b.item?.name} (${new Date(timestampB).toLocaleString()})`);
+
           return timestampB - timestampA; // Mais recente primeiro
         });
-        console.log('✅ Ordenado por data');
         break;
       case 'quantity':
         this.sortedItems.sort((a, b) => {
@@ -157,7 +149,6 @@ export class InventoryMainComponent implements OnInit {
           const qtyB = Number(b.quantity) || 0;
           return qtyB - qtyA;
         });
-        console.log('✅ Ordenado por quantidade:', this.sortedItems.map(i => `${i.item.name}: ${i.quantity}`));
         break;
     }
   }
@@ -165,7 +156,6 @@ export class InventoryMainComponent implements OnInit {
   onSortChange(event: Event) {
     const target = event.target as HTMLSelectElement;
     this.sortBy = target.value as 'rarity' | 'date' | 'quantity';
-    console.log('📝 Filtro alterado para:', this.sortBy);
     this.sortItems();
   }
 
