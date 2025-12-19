@@ -118,12 +118,13 @@ export async function rollGacha(req: Request, res: Response) {
       const userItemRef = firestore.collection(collections.userItems).doc(userItemId);
       batch.set(userItemRef, userItemData);
     } else {
-      // Se já tem, incrementa quantidade
+      // Se já tem, incrementa quantidade e atualiza data de obtenção
       const existingItem = existingItemsSnapshot.docs[0];
       const currentQuantity = existingItem.data().quantity || 1;
       totalQuantity = currentQuantity + 1;
       batch.update(existingItem.ref, {
         quantity: totalQuantity,
+        obtainedAt: new Date(), // 🔥 ATUALIZAR DATA SEMPRE QUE GANHA NOVAMENTE
         updatedAt: new Date()
       });
     }

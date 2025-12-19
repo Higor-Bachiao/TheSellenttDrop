@@ -108,39 +108,26 @@ export class InventoryMainComponent implements OnInit {
         });
         break;
       case 'date':
-        this.sortedItems.sort((a, b) => {
-          const getTimestamp = (obtainedAt: any): number => {
-            if (!obtainedAt) return 0;
-
-            // Agora o backend retorna timestamps numéricos diretamente
-            if (typeof obtainedAt === 'number') {
-              return obtainedAt;
-            }
-
-            // Fallback para outros formatos (por compatibilidade)
-            if (typeof obtainedAt === 'string') {
-              const date = new Date(obtainedAt);
-              return isNaN(date.getTime()) ? 0 : date.getTime();
-            }
-
-            if (obtainedAt instanceof Date) {
-              return obtainedAt.getTime();
-            }
-
-            if (typeof obtainedAt.toDate === 'function') {
-              return obtainedAt.toDate().getTime();
-            }
-
+        this.sortedItems = [...this.items].sort((a, b) => {
+          // Função auxiliar para converter qualquer formato para timestamp
+          const toTimestamp = (obtainedAt: any): number => {
+            if (typeof obtainedAt === 'number') return obtainedAt;
+            if (typeof obtainedAt === 'string') return new Date(obtainedAt).getTime();
+            if (obtainedAt instanceof Date) return obtainedAt.getTime();
+            if (obtainedAt?.toDate) return obtainedAt.toDate().getTime();
             return 0;
           };
 
-          const timestampA = getTimestamp(a.obtainedAt);
-          const timestampB = getTimestamp(b.obtainedAt);
+          const timeA = toTimestamp(a.obtainedAt);
+          const timeB = toTimestamp(b.obtainedAt);
 
-          // Debug temporário
-          console.log(`🔄 Comparando: ${a.item?.name} (${new Date(timestampA).toLocaleString()}) vs ${b.item?.name} (${new Date(timestampB).toLocaleString()})`);
+          // Se as datas são diferentes, ordenar por data (mais recente primeiro)
+          if (timeA !== timeB) {
+            return timeB - timeA;
+          }
 
-          return timestampB - timestampA; // Mais recente primeiro
+          // Se as datas são iguais, ordenar por nome como critério de desempate
+          return (a.item?.name || '').localeCompare(b.item?.name || '');
         });
         break;
       case 'quantity':
