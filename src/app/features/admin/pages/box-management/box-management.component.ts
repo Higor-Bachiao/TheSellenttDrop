@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 
 interface Box {
@@ -35,10 +36,14 @@ export class BoxManagementComponent implements OnInit {
     cost: 100
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit() {
     this.loadBoxes();
+  }
+
+  goBack() {
+    this.router.navigate(['/admin']);
   }
 
   loadBoxes() {

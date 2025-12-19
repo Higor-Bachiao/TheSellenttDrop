@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 
 interface User {
@@ -46,10 +47,14 @@ export class UserManagementComponent implements OnInit {
   showItemsModal = false;
   loadingItems = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit() {
     this.loadUsers();
+  }
+
+  goBack() {
+    this.router.navigate(['/admin']);
   }
 
   loadUsers() {

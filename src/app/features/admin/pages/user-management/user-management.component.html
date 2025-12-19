@@ -1,5 +1,10 @@
 <div class="user-management-container">
-  <h1>Gerenciamento de Usuários</h1>
+  <div class="header">
+    <button class="btn-back" (click)="goBack()">
+      <i class="bi bi-arrow-left"></i> Voltar
+    </button>
+    <h1>Gerenciamento de Usuários</h1>
+  </div>
 
   <div *ngIf="loading" class="loading">
     <i class="bi bi-arrow-repeat spin"></i> Carregando usuários...
