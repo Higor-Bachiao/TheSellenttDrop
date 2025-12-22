@@ -1,3 +1,4 @@
+/* Container principal */
 .inventory-container {
   padding: 2rem;
   max-width: 1400px;
@@ -7,6 +8,7 @@
   min-height: 100vh;
   overflow: visible;
 }
+
 /* Símbolos de caça-níquel flutuando no fundo */
 .slot-symbols {
   position: fixed;
@@ -48,6 +50,8 @@
 .slot-symbols .symbol:nth-child(20) { left: 12%; top: 65%; animation-delay: 38s; font-size: clamp(2.2rem, 3.9vw, 3.4rem); }
 .slot-symbols .symbol:nth-child(21) { left: 88%; top: 85%; animation-delay: 40s; font-size: clamp(1.5rem, 2.6vw, 2.3rem); }
 .slot-symbols .symbol:nth-child(22) { left: 52%; top: 25%; animation-delay: 42s; font-size: clamp(2.8rem, 5vw, 4.2rem); }
+
+/* Header */
 .header {
   display: flex;
   justify-content: space-between;
@@ -94,16 +98,12 @@ h1 {
     0 0 20px rgba(249, 115, 22, 0.8),
     0 0 40px rgba(249, 115, 22, 0.4),
     0 0 60px rgba(249, 115, 22, 0.2);
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-weight: 800;
-  position: relative;
-  z-index: 2;
   background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #f97316 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  position: relative;
+  z-index: 2;
 }
 
 h1 i {
@@ -117,6 +117,7 @@ h1 i {
   50% { transform: scale(1.05); }
 }
 
+/* Controles de ordenação */
 .sort-controls {
   display: flex;
   align-items: center;
@@ -159,19 +160,13 @@ h1 i {
 }
 
 .sort-select {
-  padding: 0.8rem 1.4rem;
   background: linear-gradient(135deg,
     rgba(20, 20, 40, 0.8) 0%,
     rgba(30, 30, 60, 0.6) 100%);
   border: 2px solid rgba(249, 115, 22, 0.6);
-  border-radius: 12px;
   color: #fff;
   font-weight: 700;
-  font-size: 1rem;
-  cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  outline: none;
-  min-width: 200px;
   backdrop-filter: blur(10px);
   box-shadow:
     0 4px 15px rgba(249, 115, 22, 0.2),
@@ -232,13 +227,10 @@ h1 i {
 .sort-select option {
   background: linear-gradient(135deg, #1a1a1a 0%, #2d1810 100%);
   color: #fff;
-  padding: 0.8rem 1rem;
   font-weight: 600;
-  border: none;
-  border-radius: 6px;
-  margin: 2px;
 }
 
+/* Estados de loading e error */
 .loading, .error {
   text-align: center;
   padding: 3rem;
@@ -302,18 +294,19 @@ h1 i {
   box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
 }
 
+/* Grid de itens */
 .items-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.5rem;
 }
 
+/* Cards de item customizados */
 .item-card {
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(20px);
   border: 3px solid rgba(255, 255, 255, 0.2);
   border-radius: 16px;
-  padding: 1.5rem;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
@@ -349,18 +342,11 @@ h1 i {
   font-size: 0.8rem;
   color: #fff;
   text-transform: uppercase;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
 }
 
 .item-image {
-  width: 100%;
   height: 220px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 12px;
   margin-bottom: 1rem;
@@ -391,9 +377,6 @@ h1 i {
 }
 
 .item-rarity {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
   margin-bottom: 1rem;
   font-weight: 700;
   font-size: 1.1rem;
@@ -409,17 +392,10 @@ h1 i {
 }
 
 .item-stats {
-  display: flex;
-  gap: 1.5rem;
-  margin-top: 1rem;
-  padding-top: 1rem;
   border-top: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .stat {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
   color: rgba(255, 255, 255, 0.8);
   font-weight: 600;
 }
@@ -429,55 +405,7 @@ h1 i {
   color: #ffd700;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .header {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 1rem;
-    padding: 1rem;
-  }
-
-  h1 {
-    font-size: 2rem;
-    text-align: center;
-  }
-
-  .sort-controls {
-    justify-content: center;
-    padding: 0.8rem 1rem;
-  }
-
-  .sort-controls label {
-    font-size: 0.9rem;
-  }
-
-  .sort-select {
-    min-width: 160px;
-    font-size: 0.9rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .header {
-    padding: 0.8rem;
-  }
-
-  h1 {
-    font-size: 1.8rem;
-  }
-
-  .sort-controls {
-    flex-direction: column;
-    gap: 0.5rem;
-    align-items: center;
-  }
-
-  .sort-select {
-    min-width: 140px;
-  }
-}
-
+/* Animações */
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
@@ -487,29 +415,29 @@ h1 i {
   animation: spin 1s linear infinite;
 }
 
-.loading {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-top: 40px;
-  color: #ff9800; /* pode trocar */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
 }
 
-.loading i {
-  font-size: 48px;
-  margin-bottom: 12px;
-}
-
-.spinning {
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
+/* Responsive usando Bootstrap + customizações */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
   }
-  to {
-    transform: rotate(360deg);
+
+  .sort-select {
+    min-width: 160px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  .sort-select {
+    min-width: 140px;
   }
 }
