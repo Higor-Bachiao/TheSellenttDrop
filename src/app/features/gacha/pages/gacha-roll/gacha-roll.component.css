@@ -7,9 +7,7 @@
 
 /* Botão Voltar */
 .btn-back {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
+  position: relative;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -24,13 +22,14 @@
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
-  z-index: 10;
+  margin-bottom: 1rem;
+  width: fit-content;
 }
 
 .btn-back:hover {
   background: linear-gradient(135deg, rgba(249, 115, 22, 0.3) 0%, rgba(234, 88, 12, 0.3) 100%);
   border-color: #f97316;
-  transform: translateX(-5px) scale(1.05);
+  transform: translateY(-2px) scale(1.02);
   box-shadow: 0 6px 25px rgba(249, 115, 22, 0.5);
 }
 
@@ -40,7 +39,7 @@
 }
 
 .btn-back:hover i {
-  transform: translateX(-3px);
+  transform: scale(1.1);
 }
 
 /* Gacha Box */
