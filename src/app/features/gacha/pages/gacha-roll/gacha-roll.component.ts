@@ -235,7 +235,13 @@ export class GachaRollComponent implements OnInit {
 
   animateSlotMachine(finalPosition: number) {
     const startTime = Date.now();
-    const duration = 9500; // 6.5 segundos total para uma desaceleração mais gradual
+    
+    // Calcular duração dinamicamente para manter velocidade consistente
+    // Velocidade base: ~600px em 4000ms = 150px/s (muito mais rápido)
+    const distanceToTravel = Math.abs(finalPosition - (-1000));
+    const baseSpeed = 600; // pixels por segundo (aumentado de 300)
+    const duration = Math.max(4000, (distanceToTravel / baseSpeed) * 1000);
+    
     const startPosition = -1000; // Começar 1000px acima (itens invisíveis)
     this.slotPosition = startPosition;
 
