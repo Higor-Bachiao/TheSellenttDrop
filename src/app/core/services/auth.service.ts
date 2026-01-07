@@ -98,12 +98,13 @@ export class AuthService {
     return from(signInWithEmailAndPassword(this.auth, email, password)).pipe(
       switchMap(async (userCredential) => {
         // Verificar se o email foi verificado
-        if (!userCredential.user.emailVerified) {
-          throw {
-            code: 'auth/email-not-verified',
-            message: 'Por favor, verifique seu email antes de fazer login. Verifique sua caixa de entrada e spam.'
-          };
-        }
+        // ⚠️ TEMPORARIAMENTE DESABILITADO PARA TESTES
+        // if (!userCredential.user.emailVerified) {
+        //   throw {
+        //     code: 'auth/email-not-verified',
+        //     message: 'Por favor, verifique seu email antes de fazer login. Verifique sua caixa de entrada e spam.'
+        //   };
+        // }
         
         const token = await userCredential.user.getIdToken();
         this.tokenSubject.next(token);
