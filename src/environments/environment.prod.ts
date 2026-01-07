@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://your-api-domain.com/api', // Atualize quando fizer deploy
+  apiUrl: 'https://thesellenttdrop.onrender.com/api',
   firebase: {
     apiKey: "AIzaSyAbmEI-yBcXyNg-eTt72PkpXQHalGwkqwY",
     authDomain: "the-sellentt-drop.firebaseapp.com",
