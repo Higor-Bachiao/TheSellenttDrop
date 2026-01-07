@@ -28,23 +28,31 @@ export class LoginComponent {
   isLoading = false;
 
   onSubmit(): void {
+    console.log('🔵 Login form submitted');
+    console.log('🔵 Form valid:', this.loginForm.valid);
+    console.log('🔵 Form value:', this.loginForm.value);
+    
     if (this.loginForm.valid) {
       this.isLoading = true;
       const { email, password } = this.loginForm.value;
 
+      console.log('🔵 Calling authService.login...');
       this.authService.login(email, password).subscribe({
-        next: () => {
+        next: (user) => {
+          console.log('✅ Login SUCCESS:', user);
           this.isLoading = false;
           this.toastService.success('Login realizado com sucesso! 🎰');
           this.router.navigate(['/gacha']);
         },
         error: (error) => {
+          console.error('❌ Login ERROR:', error);
           this.isLoading = false;
           const errorMessage = this.getErrorMessage(error);
           this.toastService.error(errorMessage);
         }
       });
     } else {
+      console.warn('⚠️ Form is invalid');
       this.markFormGroupTouched(this.loginForm);
     }
   }

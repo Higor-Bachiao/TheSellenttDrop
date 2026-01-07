@@ -95,8 +95,12 @@ export class AuthService {
   }
 
   login(email: string, password: string): Observable<User> {
+    console.log('🔵 AuthService.login() called with email:', email);
+    
     return from(signInWithEmailAndPassword(this.auth, email, password)).pipe(
       switchMap(async (userCredential) => {
+        console.log('✅ Firebase signIn SUCCESS:', userCredential.user.uid);
+        
         // Verificar se o email foi verificado
         // ⚠️ TEMPORARIAMENTE DESABILITADO PARA TESTES
         // if (!userCredential.user.emailVerified) {
@@ -107,14 +111,17 @@ export class AuthService {
         // }
         
         const token = await userCredential.user.getIdToken();
+        console.log('✅ Got Firebase token');
         this.tokenSubject.next(token);
         return { token, uid: userCredential.user.uid };
       }),
       switchMap(({ uid }) => {
+        console.log('🔵 Fetching user data from backend:', `${environment.apiUrl}/auth/user/${uid}`);
         // Buscar dados do usuário no backend
         return this.http.get<ApiResponse<User>>(`${environment.apiUrl}/auth/user/${uid}`);
       }),
       map(response => {
+        console.log('✅ Backend response:', response);
         if (response.success && response.data) {
           this.currentUserSubject.next(response.data);
           return response.data;
@@ -122,7 +129,7 @@ export class AuthService {
         throw new Error(response.error || 'Erro ao fazer login');
       }),
       catchError(error => {
-        console.error('Erro no login:', error);
+        console.error('❌ Erro no login:', error);
         return throwError(() => error);
       })
     );
